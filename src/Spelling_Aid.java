@@ -1,4 +1,4 @@
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,22 +11,22 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Color;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 @SuppressWarnings("serial")
 public class Spelling_Aid extends JFrame {
@@ -283,15 +283,17 @@ public class Spelling_Aid extends JFrame {
 
 		// Finds out all of the levels in the word list and stores in a JComboBox
 		// Original code by David
-		selectLV = new JComboBox(scanLevels("resources/NZCER-spelling-lists.txt").toArray());
+		selectLV = new JComboBox();
 
 		// Adds an ActionListener to the JComboBox to extract the level and save it in the _level field
 		selectLV.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				JComboBox lv = (JComboBox) evt.getSource();
 				String selectedlv = (String) lv.getSelectedItem();
-				String[] level = selectedlv.split(" ");
-				_level = Integer.parseInt(level[1]);
+				if (selectedlv != null) {
+					String[] level = selectedlv.split(" ");
+					_level = Integer.parseInt(level[1]);
+				}
 			}
 		});
 
@@ -300,17 +302,74 @@ public class Spelling_Aid extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// Asks the user to select a level to start at once they click Start Quiz
-				int response = JOptionPane.showConfirmDialog(null, selectLV, "Please select a level", JOptionPane.OK_CANCEL_OPTION);
+				int defaultList = JOptionPane.showConfirmDialog(new JFrame(), "Would you like to use the default wordlist?", "Select Wordlist",
+						JOptionPane.YES_NO_OPTION);
 
-				if (response == JOptionPane.OK_OPTION) {
-					// Starts a new quiz and hides the main menu
-					_quiz = new Quiz(Quiz.quizType.QUIZ, Spelling_Aid.this, _level);
-					setVisible(false);
-					_quiz.startQuiz();
+				if (defaultList == JOptionPane.YES_OPTION) {
+					selectLV.removeAllItems();
+					for (String level : scanLevels("resources/NZCER-spelling-lists.txt")) {
+						selectLV.addItem(level);
+					}
+
+					// Asks the user to select a level to start at once they click Start Quiz
+					int response = JOptionPane.showConfirmDialog(null, selectLV, "Please select a level", JOptionPane.OK_CANCEL_OPTION);
+
+					if (response == JOptionPane.OK_OPTION) {
+						// Starts a new quiz and hides the main menu
+						_quiz = new Quiz(Quiz.quizType.QUIZ, Spelling_Aid.this, _level);
+						setVisible(false);
+						_quiz.startQuiz();
+					}
+				} else {
+
+					JOptionPane.showMessageDialog(new JFrame(), "Please select your wordlist", "Select Wordlist",
+							JOptionPane.INFORMATION_MESSAGE);
+
+
+					JFileChooser fileChooser = new JFileChooser();
+
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.setFileFilter(filter);
+					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+					int result = fileChooser.showOpenDialog(Spelling_Aid.this);
+					while (result == JFileChooser.APPROVE_OPTION) {
+						File wordlist = fileChooser.getSelectedFile();
+						// If the file chosen is not called "wordlist", then an error message is displayed and the user is sent back
+						// to the main menu
+						ArrayList<String> levels = scanLevels(wordlist.toString());
+
+						if (levels.isEmpty()) {
+							JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level", "Incorrect File Format",
+									JOptionPane.INFORMATION_MESSAGE);
+							result = fileChooser.showOpenDialog(Spelling_Aid.this);
+						} else {
+
+							selectLV.removeAllItems();
+
+							for (String level : levels) {
+								selectLV.addItem(level);
+							}
+
+							break;
+						}
+
+
+					} if (result == JFileChooser.CANCEL_OPTION) {
+					} else {
+						// Asks the user to select a level to start at once they click Start Quiz
+						int response = JOptionPane.showConfirmDialog(null, selectLV, "Please select a level", JOptionPane.OK_CANCEL_OPTION);
+
+						if (response == JOptionPane.OK_OPTION) {
+							// Starts a new quiz and hides the main menu
+							_quiz = new Quiz(Quiz.quizType.QUIZ, Spelling_Aid.this, _level);
+							setVisible(false);
+							_quiz.startQuiz();
+						}
+					}
 				}
 			}
-
 		});
 		review.addActionListener(new ActionListener() {
 
@@ -376,7 +435,7 @@ public class Spelling_Aid extends JFrame {
 		}
 
 		selectVoices = new JComboBox(_availableVoices.toArray());
-		
+
 		// Adds an ActionListener to the JComboBox to save the selected voice into the _selectedVoice field
 		selectVoices.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -468,12 +527,12 @@ public class Spelling_Aid extends JFrame {
 		getContentPane().setLayout(null);
 		getContentPane().add(menu);
 		getContentPane().add(options);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		ImageIcon image = new ImageIcon("resources/Logo.png");
-		
+
 		lblNewLabel.setIcon(image);
-		
+
 		lblNewLabel.setBounds(0, 0, 400, 148);
 		getContentPane().add(lblNewLabel);
 
@@ -639,7 +698,7 @@ public class Spelling_Aid extends JFrame {
 			} else {
 				_quiz.submit.setEnabled(true);
 			}
-			
+
 			// The user is allowed to hear a repeat of the word if they have not attempted the word yet
 			// and they have also not repeated it before
 			if (_quiz.attempts == 0 && _quiz.repeated == false) {
