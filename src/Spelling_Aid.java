@@ -24,6 +24,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class Spelling_Aid extends JFrame {
@@ -32,7 +35,6 @@ public class Spelling_Aid extends JFrame {
 	private JButton review = new JButton("Review Mistakes");
 	private JButton statistics = new JButton("View Statistics");
 	private JButton clear = new JButton("Clear Statistics");
-	private JTextArea txtOutput = new JTextArea(10, 20);
 	private Quiz _quiz;
 	private Statistics _statistics;
 	@SuppressWarnings("rawtypes")
@@ -270,10 +272,12 @@ public class Spelling_Aid extends JFrame {
 	 */
 	public Spelling_Aid() {
 		super("Spelling Aid");
+		setBackground(Color.WHITE);
 		setSize(400, 400);
 		GridLayout layout = new GridLayout(2, 2);
 
 		JPanel menu = new JPanel();
+		menu.setBounds(0, 150, 400, 215);
 		menu.setLayout(layout);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -382,16 +386,13 @@ public class Spelling_Aid extends JFrame {
 			}
 		});
 
-		txtOutput.setText(
-				"Welcome to the Spelling Aid!\n\nPress \"New Quiz\" to start a new quiz\nPress \"Review\" to review previously failed words\nPress \"View Statistics\" to view your current statistics\nPress \"Clear Statistics\" to clear all current statistics\nPress \"Settings\" to change the text to speech voice or speed");
-		txtOutput.setEditable(false);
-
 		menu.add(quiz);
 		menu.add(review);
 		menu.add(statistics);
 		menu.add(clear);
 
 		JPanel options = new JPanel();
+		options.setBounds(0, 365, 400, 35);
 
 
 		exit.addActionListener(new ActionListener() {
@@ -464,10 +465,17 @@ public class Spelling_Aid extends JFrame {
 
 		options.add(settings);
 		options.add(exit);
-
-		add(txtOutput, BorderLayout.NORTH);
-		add(menu);
-		add(options, BorderLayout.SOUTH);
+		getContentPane().setLayout(null);
+		getContentPane().add(menu);
+		getContentPane().add(options);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		ImageIcon image = new ImageIcon("resources/Logo.png");
+		
+		lblNewLabel.setIcon(image);
+		
+		lblNewLabel.setBounds(0, 0, 400, 148);
+		getContentPane().add(lblNewLabel);
 
 		setResizable(false);
 		setLocationRelativeTo(null);
