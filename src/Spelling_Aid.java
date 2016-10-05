@@ -60,6 +60,7 @@ public class Spelling_Aid extends JFrame {
 	private JButton settings = new JButton("Settings");
 	private JButton changeSpeed = new JButton("Change Speaker Speed");
 	private String _defaultSpeed = "(Parameter.set 'Duration_Stretch 1.0)";
+	protected File wordlist;
 
 	public static void main(String[] Args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -337,7 +338,7 @@ public class Spelling_Aid extends JFrame {
 					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 					int result = fileChooser.showOpenDialog(Spelling_Aid.this);
 					while (result == JFileChooser.APPROVE_OPTION) {
-						File wordlist = fileChooser.getSelectedFile();
+						wordlist = fileChooser.getSelectedFile();
 						// If the file chosen is not called "wordlist", then an error message is displayed and the user is sent back
 						// to the main menu
 						ArrayList<String> levels = scanLevels(wordlist.toString());

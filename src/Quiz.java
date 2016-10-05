@@ -75,7 +75,7 @@ public class Quiz {
 		switch (_type) {
 		case QUIZ:
 
-			words = _spelling_Aid.readLevel(new File("resources/NZCER-spelling-lists.txt"), _level);
+			words = _spelling_Aid.readLevel(_spelling_Aid.wordlist, _level);
 
 			break;
 
