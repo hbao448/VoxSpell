@@ -28,6 +28,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+
+
 @SuppressWarnings("serial")
 public class Spelling_Aid extends JFrame {
 
@@ -85,7 +87,7 @@ public class Spelling_Aid extends JFrame {
 	 * 
 	 * @param texts The list of strings to be spoken in order
 	 */
-	public void textToSpeech(ArrayList<String> texts) {
+	public void textToSpeech(ArrayList<String> texts, boolean sound, boolean noBeep) {
 
 		BufferedWriter bw = null;
 
@@ -134,7 +136,7 @@ public class Spelling_Aid extends JFrame {
 		}
 
 		// Starts a new worker instance and executes it
-		Speaker worker = new Speaker();
+		Speaker worker = new Speaker(sound, noBeep);
 		worker.execute();
 
 	}
@@ -159,7 +161,7 @@ public class Spelling_Aid extends JFrame {
 			texts.add(letters[i] + "");
 		}
 
-		textToSpeech(texts);
+		textToSpeech(texts, true, true);
 
 	}
 
@@ -539,8 +541,7 @@ public class Spelling_Aid extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
-		// Clears the statistics when first started up, so past data is not saved
-		clearStatistics();
+		
 	}
 
 	/**
@@ -675,12 +676,52 @@ public class Spelling_Aid extends JFrame {
 	 */
 	class Speaker extends SwingWorker<Void, Void> {
 
-		public Speaker() {
+		private boolean _correct;
+		private boolean _noBeep;
+
+		public Speaker(boolean correct, boolean noBeep) {
+			_correct = correct;
+			_noBeep = noBeep;
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
 
+			if (!_noBeep) {
+				String command;
+				if (_correct) {
+					command = "ffmpeg -i resources/correct.wav -f alsa hw:0";
+				} else {
+					command = "ffmpeg -i resources/incorrect.wav -f alsa hw:0";
+				}
+
+				Spelling_Aid.bashCommand(command);
+				
+			}
+
+			return null;
+		}
+
+		// If the quiz is complete, then disable the submit button, otherwise
+		// re-enable the submit button
+		protected void done() {
+
+			ttsSpeaker speaker = new ttsSpeaker();
+			speaker.execute();
+			
+		}
+
+	}
+
+	class ttsSpeaker extends SwingWorker<Void, Void> {
+
+		public ttsSpeaker() {
+			
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			
 			// Calls a bash command to run festival with the scheme file
 			Spelling_Aid.bashCommand("festival -b .text.scm");
 
