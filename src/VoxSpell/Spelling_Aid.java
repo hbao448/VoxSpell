@@ -350,18 +350,22 @@ public class Spelling_Aid extends JFrame {
 									JOptionPane.INFORMATION_MESSAGE);
 							result = fileChooser.showOpenDialog(Spelling_Aid.this);
 						} else {
-							
+
 							ArrayList<String> levels = new ArrayList<String>();
-							
-							try {
-							levels = scanLevels(wordlist.toString());
-							} catch (Exception e2) {
-								JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must the levels stored in ascending order, starting from level 1", "Incorrect File Format",
-										JOptionPane.INFORMATION_MESSAGE);
-								result = fileChooser.showOpenDialog(Spelling_Aid.this);
+
+							while (result == JFileChooser.APPROVE_OPTION) {
+								try {
+									levels = scanLevels(wordlist.toString());
+									break;
+								} catch (Exception e2) {
+									JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must the levels stored in ascending order, starting from level 1", "Incorrect File Format",
+											JOptionPane.INFORMATION_MESSAGE);
+									result = fileChooser.showOpenDialog(Spelling_Aid.this);
+									wordlist = fileChooser.getSelectedFile();
+								}
 							}
-							
-							if (levels.isEmpty()) {
+
+							if (levels.isEmpty() && result == JFileChooser.APPROVE_OPTION) {
 								JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level", "Incorrect File Format",
 										JOptionPane.INFORMATION_MESSAGE);
 								result = fileChooser.showOpenDialog(Spelling_Aid.this);
@@ -779,7 +783,7 @@ public class Spelling_Aid extends JFrame {
 		ArrayList<String> all = readList(new File(wordlist));
 		ArrayList<String> levels = new ArrayList<String>();
 		int previousLevel = 0;
-		
+
 		for(String content: all){
 			if(content.startsWith("%Level")){
 				int level = Integer.parseInt(content.split(" ")[1]);
