@@ -34,7 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Spelling_Aid extends JFrame {
 
 	private JButton quiz = new JButton("New Spelling Quiz");
-	private JButton review = new JButton("Review Mistakes");
+	private JButton hiscores = new JButton("View Hiscores");
 	private JButton statistics = new JButton("View Statistics");
 	private JButton clear = new JButton("Clear Statistics");
 	private Quiz _quiz;
@@ -45,7 +45,7 @@ public class Spelling_Aid extends JFrame {
 	private JComboBox selectVoices;
 	private int _level = 1;
 	private ArrayList<String> _availableVoices = new ArrayList<String>();
-	private String _voicePath = "/usr/share/festival/voices";
+	private String[] _voiceNames = {"kal_diphone", "rab_diphone", "akl_nz_jdt_diphone"};
 	private JButton exit = new JButton("Exit");
 	private JButton changeVoice = new JButton("Change Speaker Voice");
 	protected String _selectedVoice;
@@ -308,10 +308,10 @@ public class Spelling_Aid extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 
 				if (defaultList == JOptionPane.YES_OPTION) {
-					wordlist = new File("resources/NZCER-spelling-lists.txt");
+					wordlist = new File("resources/Default Wordlist.txt");
 					selectLV.removeAllItems();
 					try {
-						for (String level : scanLevels("resources/NZCER-spelling-lists.txt")) {
+						for (String level : scanLevels("resources/Default Wordlist.txt")) {
 							selectLV.addItem(level);
 						}
 					} catch (Exception e1) {
@@ -322,7 +322,7 @@ public class Spelling_Aid extends JFrame {
 
 					if (response == JOptionPane.OK_OPTION) {
 						// Starts a new quiz and hides the main menu
-						_quiz = new Quiz(Quiz.quizType.QUIZ, Spelling_Aid.this, _level);
+						_quiz = new Quiz(Spelling_Aid.this, _level);
 						setVisible(false);
 						_quiz.startQuiz();
 					}
@@ -389,7 +389,7 @@ public class Spelling_Aid extends JFrame {
 
 						if (response == JOptionPane.OK_OPTION) {
 							// Starts a new quiz and hides the main menu
-							_quiz = new Quiz(Quiz.quizType.QUIZ, Spelling_Aid.this, _level);
+							_quiz = new Quiz(Spelling_Aid.this, _level);
 							setVisible(false);
 							_quiz.startQuiz();
 						}
@@ -397,21 +397,14 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
-		review.setBounds(200, 0, 200, 107);
-		review.addActionListener(new ActionListener() {
+		hiscores.setBounds(200, 0, 200, 107);
+		hiscores.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Asks the user to select a level to review, then starts a new review and hides the main menu
-				int response = JOptionPane.showConfirmDialog(null, selectLV, "Please select a level", JOptionPane.OK_CANCEL_OPTION);
-
-				if (response == JOptionPane.OK_OPTION) {
-
-					_quiz = new Quiz(Quiz.quizType.REVIEW, Spelling_Aid.this, _level);
-					setVisible(false);
-					_quiz.startQuiz();
-				}
-
+				
+				
+				
 			}
 
 		});
@@ -463,7 +456,9 @@ public class Spelling_Aid extends JFrame {
 			_availableVoices.add(voices);
 		}*/
 		
-		_availableVoices.add("NZ");
+		_availableVoices.add("American Voice");
+		_availableVoices.add("British Voice");
+		_availableVoices.add("New Zealand Voice");
 
 		selectVoices = new JComboBox(_availableVoices.toArray());
 
@@ -471,14 +466,14 @@ public class Spelling_Aid extends JFrame {
 		selectVoices.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				JComboBox voice = (JComboBox) evt.getSource();
-				String selectedvoice = (String) voice.getSelectedItem();
-				_selectedVoice = selectedvoice;
+				int index = voice.getSelectedIndex();
+				_selectedVoice = _voiceNames[index];
 			}
 		});
 		menu.setLayout(null);
 
 		menu.add(quiz);
-		menu.add(review);
+		menu.add(hiscores);
 		menu.add(statistics);
 		menu.add(clear);
 
@@ -617,7 +612,7 @@ public class Spelling_Aid extends JFrame {
 			bw = new BufferedWriter(new FileWriter(".results", true));
 
 			// Writes the level and score to the results file
-			bw.write("Level" + level + "\t" + score + "\t" + wordlist.getAbsolutePath());
+			bw.write("Level" + level + "\t" + score + "\t" + wordlist.getName());
 			bw.newLine();
 
 		} catch (IOException e) {
@@ -722,19 +717,17 @@ public class Spelling_Aid extends JFrame {
 
 			Spelling_Aid.bashCommand("rm -f .text.scm");
 
+			if (_quiz.repeats > 0 ) {
+				_quiz.repeat.setEnabled(true);
+			}
+			
 			if (_quiz.attempts == 2 || _quiz.correct) {
 				_quiz.submit.setEnabled(false);
+				_quiz.repeat.setEnabled(false);
 			} else {
 				_quiz.submit.setEnabled(true);
 			}
-
-			// The user is allowed to hear a repeat of the word if they have not attempted the word yet
-			// and they have also not repeated it before
-			if (_quiz.attempts == 0 && _quiz.repeated == false) {
-				_quiz.repeat.setEnabled(true);
-			} else {
-				_quiz.repeat.setEnabled(false);
-			}
+			
 		}
 
 	}
@@ -802,5 +795,29 @@ public class Spelling_Aid extends JFrame {
 		}
 
 		return levels;
+	}
+
+	public void saveScore(String name, int _level2, int score) {
+		
+		BufferedWriter bw = null;
+
+		try {
+			// Opens the .results file for appending
+			bw = new BufferedWriter(new FileWriter(".scores", true));
+
+			// Writes the level and score to the results file
+			bw.write(name + "\t" + _level2 + "\t" + score + "\t" + wordlist.getName());
+			bw.newLine();
+
+		} catch (IOException e) {
+
+		} finally {
+			try {
+				bw.close();
+			} catch (IOException e) {
+
+			}
+		}
+		
 	}
 }

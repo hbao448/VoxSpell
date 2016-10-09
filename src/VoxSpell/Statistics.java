@@ -24,7 +24,7 @@ public class Statistics{
 	private Spelling_Aid _spelling_Aid;
 	private JTable table;
 	private static DecimalFormat df = new DecimalFormat("#.#");
-	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts", "Wordlist File"};
+	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts", "Wordlist"};
 
 	public Statistics(Spelling_Aid spelling_Aid) {
 		_spelling_Aid = spelling_Aid;
