@@ -300,6 +300,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		quiz.setToolTipText("Starts a new spelling quiz");
 		quiz.setBackground(new Color(255, 255, 0));
 		quiz.setBounds(0, 0, 200, 107);
 
@@ -401,6 +402,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		hiscores.setToolTipText("View the current high scores");
 		hiscores.setBackground(new Color(255, 255, 0));
 		hiscores.setBounds(200, 0, 200, 107);
 		hiscores.addActionListener(new ActionListener() {
@@ -414,6 +416,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		statistics.setToolTipText("View the pass rates for each level");
 		statistics.setBackground(new Color(255, 255, 0));
 		statistics.setBounds(0, 107, 200, 107);
 		statistics.addActionListener(new ActionListener() {
@@ -427,6 +430,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		clear.setToolTipText("Clear all saved statistics and scores");
 		clear.setBackground(new Color(255, 255, 0));
 		clear.setBounds(200, 107, 200, 107);
 		clear.addActionListener(new ActionListener() {
@@ -488,6 +492,7 @@ public class Spelling_Aid extends JFrame {
 		JPanel options = new JPanel();
 		options.setBackground(new Color(100, 149, 237));
 		options.setBounds(0, 365, 400, 35);
+		exit.setToolTipText("Quit the program");
 		exit.setBackground(new Color(255, 255, 0));
 
 
@@ -548,6 +553,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		settings.setToolTipText("Change voice and speaker speed");
 		settings.setBackground(new Color(255, 255, 0));
 
 		// Adds an ActionListener to the change voice button to display a JOptionPane message allowing the user to change voice or speed

@@ -79,6 +79,7 @@ public class Hiscores {
 		});
 
 		JButton mainMenu = new JButton("Main Menu");
+		mainMenu.setBackground(new Color(255, 255, 0));
 		mainMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_spelling_Aid.setVisible(true);
