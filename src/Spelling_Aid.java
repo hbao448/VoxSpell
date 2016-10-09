@@ -1,3 +1,5 @@
+package VoxSpell;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -58,6 +60,7 @@ public class Spelling_Aid extends JFrame {
 	private JButton settings = new JButton("Settings");
 	private JButton changeSpeed = new JButton("Change Speaker Speed");
 	private String _defaultSpeed = "(Parameter.set 'Duration_Stretch 1.0)";
+	protected File wordlist;
 
 	public static void main(String[] Args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -307,8 +310,11 @@ public class Spelling_Aid extends JFrame {
 
 				if (defaultList == JOptionPane.YES_OPTION) {
 					selectLV.removeAllItems();
-					for (String level : scanLevels("resources/NZCER-spelling-lists.txt")) {
-						selectLV.addItem(level);
+					try {
+						for (String level : scanLevels("resources/NZCER-spelling-lists.txt")) {
+							selectLV.addItem(level);
+						}
+					} catch (Exception e1) {
 					}
 
 					// Asks the user to select a level to start at once they click Start Quiz
@@ -335,24 +341,40 @@ public class Spelling_Aid extends JFrame {
 					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 					int result = fileChooser.showOpenDialog(Spelling_Aid.this);
 					while (result == JFileChooser.APPROVE_OPTION) {
-						File wordlist = fileChooser.getSelectedFile();
+						wordlist = fileChooser.getSelectedFile();
 						// If the file chosen is not called "wordlist", then an error message is displayed and the user is sent back
 						// to the main menu
-						ArrayList<String> levels = scanLevels(wordlist.toString());
 
-						if (levels.isEmpty()) {
-							JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level", "Incorrect File Format",
+						if (wordlist.length() > 10000000) {
+							JOptionPane.showMessageDialog(new JFrame(), "The wordlist must be smaller than 10MB, please select another file", "File too large",
 									JOptionPane.INFORMATION_MESSAGE);
 							result = fileChooser.showOpenDialog(Spelling_Aid.this);
 						} else {
-
-							selectLV.removeAllItems();
-
-							for (String level : levels) {
-								selectLV.addItem(level);
+							
+							ArrayList<String> levels = new ArrayList<String>();
+							
+							try {
+							levels = scanLevels(wordlist.toString());
+							} catch (Exception e2) {
+								JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must the levels stored in ascending order, starting from level 1", "Incorrect File Format",
+										JOptionPane.INFORMATION_MESSAGE);
+								result = fileChooser.showOpenDialog(Spelling_Aid.this);
 							}
+							
+							if (levels.isEmpty()) {
+								JOptionPane.showMessageDialog(new JFrame(), "The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level", "Incorrect File Format",
+										JOptionPane.INFORMATION_MESSAGE);
+								result = fileChooser.showOpenDialog(Spelling_Aid.this);
+							} else {
 
-							break;
+								selectLV.removeAllItems();
+
+								for (String level : levels) {
+									selectLV.addItem(level);
+								}
+
+								break;
+							}
 						}
 
 
@@ -750,15 +772,23 @@ public class Spelling_Aid extends JFrame {
 	 * 
 	 * @param wordlist The wordlist to scan the levels from
 	 * @return An ArrayList of levels inside the wordlist
+	 * @throws Exception 
 	 */
-	public ArrayList<String> scanLevels(String wordlist){
+	public ArrayList<String> scanLevels(String wordlist) throws Exception{
+		maxLevel = 0;
 		ArrayList<String> all = readList(new File(wordlist));
 		ArrayList<String> levels = new ArrayList<String>();
-
+		int previousLevel = 0;
+		
 		for(String content: all){
 			if(content.startsWith("%Level")){
-				levels.add("Level " + content.split(" ")[1]);
-				if (Integer.parseInt(content.split(" ")[1]) > maxLevel) {
+				int level = Integer.parseInt(content.split(" ")[1]);
+				if (level != previousLevel + 1) {
+					throw new Exception();
+				}
+				levels.add("Level " + level);
+				previousLevel = level;
+				if (level > maxLevel) {
 					maxLevel = Integer.parseInt(content.split(" ")[1]);
 				}
 			}
