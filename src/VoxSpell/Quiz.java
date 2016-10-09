@@ -3,6 +3,7 @@ package VoxSpell;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -455,12 +456,15 @@ public class Quiz {
 		repeat.setEnabled(false);
 
 		quizOptions.add(repeat);
+		quizOptions.setBackground(new Color(100, 149, 237));
 
 		panel.add(input, BorderLayout.CENTER);
 		panel.add(quizOptions, BorderLayout.EAST);
-
+		panel.setBackground(new Color(100, 149, 237));
+		
 		options.add(close, JPanel.LEFT_ALIGNMENT);
 		options.add(restart, JPanel.RIGHT_ALIGNMENT);
+		options.setBackground(new Color(100, 149, 237));
 
 		// If the quiz type is quiz, then the options for the quiz include a next level button and
 		// video reward button
@@ -468,7 +472,6 @@ public class Quiz {
 
 		options.add(nextLevel);
 		options.add(videoReward);
-
 
 		nextLevel.setEnabled(false);
 		videoReward.setEnabled(false);
@@ -479,6 +482,13 @@ public class Quiz {
 		frame.add(panel, BorderLayout.NORTH);
 		frame.add(internal, BorderLayout.CENTER);
 		frame.add(options, BorderLayout.SOUTH);
+		
+		submit.setBackground(new Color(255, 255, 0));
+		repeat.setBackground(new Color(255, 255, 0));
+		close.setBackground(new Color(255, 255, 0));
+		restart.setBackground(new Color(255, 255, 0));
+		nextLevel.setBackground(new Color(255, 255, 0));
+		videoReward.setBackground(new Color(255, 255, 0));
 
 		// Sets the submit button as the default one so that the enter button can be used to submit
 		frame.getRootPane().setDefaultButton(submit);

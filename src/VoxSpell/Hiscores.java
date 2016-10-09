@@ -198,6 +198,10 @@ public class Hiscores {
 		
 		table.getColumnModel().getColumn(1).setPreferredWidth(105);
 		table.getColumnModel().getColumn(3).setPreferredWidth(128);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
+		table.setEnabled(false);
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 }

@@ -275,14 +275,16 @@ public class Spelling_Aid extends JFrame {
 	 * Reused A2 code
 	 */
 	public Spelling_Aid() {
-		super("Spelling Aid");
-		setBackground(Color.WHITE);
+		super("VoxSpell");
+		setBackground(new Color(100, 149, 237));
 		setSize(400, 400);
 
 		JPanel menu = new JPanel();
+		menu.setBackground(new Color(100, 149, 237));
 		menu.setBounds(0, 150, 400, 215);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		
 		// Finds out all of the levels in the word list and stores in a JComboBox
 		// Original code by David
 		selectLV = new JComboBox();
@@ -298,6 +300,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		quiz.setBackground(new Color(255, 255, 0));
 		quiz.setBounds(0, 0, 200, 107);
 
 		quiz.addActionListener(new ActionListener() {
@@ -398,6 +401,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		hiscores.setBackground(new Color(255, 255, 0));
 		hiscores.setBounds(200, 0, 200, 107);
 		hiscores.addActionListener(new ActionListener() {
 
@@ -410,6 +414,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		statistics.setBackground(new Color(255, 255, 0));
 		statistics.setBounds(0, 107, 200, 107);
 		statistics.addActionListener(new ActionListener() {
 
@@ -422,6 +427,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		clear.setBackground(new Color(255, 255, 0));
 		clear.setBounds(200, 107, 200, 107);
 		clear.addActionListener(new ActionListener() {
 
@@ -480,7 +486,9 @@ public class Spelling_Aid extends JFrame {
 		menu.add(clear);
 
 		JPanel options = new JPanel();
+		options.setBackground(new Color(100, 149, 237));
 		options.setBounds(0, 365, 400, 35);
+		exit.setBackground(new Color(255, 255, 0));
 
 
 		exit.addActionListener(new ActionListener() {
@@ -540,6 +548,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		settings.setBackground(new Color(255, 255, 0));
 
 		// Adds an ActionListener to the change voice button to display a JOptionPane message allowing the user to change voice or speed
 		settings.addActionListener(new ActionListener() {
@@ -558,7 +567,10 @@ public class Spelling_Aid extends JFrame {
 		getContentPane().add(options);
 
 		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(0, 0, 400, 148);
+		lblNewLabel.setForeground(new Color(100, 149, 237));
+		lblNewLabel.setBackground(new Color(100, 149, 237));
+		lblNewLabel.setBounds(0, 0, 400, 150);
+		lblNewLabel.setOpaque(true);
 		ImageIcon image = new ImageIcon("resources/Logo.png");
 
 		lblNewLabel.setIcon(image);

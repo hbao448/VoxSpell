@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Color;
 
 public class Statistics{
 
@@ -27,6 +28,7 @@ public class Statistics{
 	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts", "Wordlist"};
 
 	public Statistics(Spelling_Aid spelling_Aid) {
+		close.setBackground(new Color(255, 255, 0));
 		_spelling_Aid = spelling_Aid;
 	}
 
@@ -80,7 +82,7 @@ public class Statistics{
 
 			// Adds the JTable to a JScrollPane to allow for scrolling and for headers to show up
 			JScrollPane scroll = new JScrollPane(table);
-			frame.add(scroll,BorderLayout.CENTER);
+			frame.getContentPane().add(scroll,BorderLayout.CENTER);
 
 			// Disposes the JFrame and unhides the main menu once the "Main Menu" button is pressed
 			close.addActionListener(new ActionListener() {
@@ -93,11 +95,19 @@ public class Statistics{
 
 			});
 
+			table.setOpaque(true);
+			scroll.setOpaque(true);
+			scroll.getViewport().setBackground(new Color(100, 149, 237));
+			
+			table.setBackground(new Color(255, 255, 0));
+			frame.setBackground(new Color(100, 149, 237));
+			scroll.setBackground(new Color(100, 149, 237));
 			// Finally displays the JFrame containing the statistics
-			frame.add(close,BorderLayout.SOUTH);
+			frame.getContentPane().add(close,BorderLayout.SOUTH);
+			
+			
 			frame.setResizable(false);
 			frame.setVisible(true);
-
 		}
 	}
 
@@ -198,7 +208,7 @@ public class Statistics{
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getTableHeader().setResizingAllowed(false);
 			table.getColumnModel().getColumn(0).setPreferredWidth(40);
-			table.getColumnModel().getColumn(5).setPreferredWidth(300);
+			table.getColumnModel().getColumn(5).setPreferredWidth(250);
 			table.setEnabled(false);
 		}
 	}

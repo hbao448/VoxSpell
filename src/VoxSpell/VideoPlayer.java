@@ -13,6 +13,7 @@ import javax.swing.Timer;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import java.awt.Color;
 
 
 public class VideoPlayer {
@@ -33,13 +34,16 @@ public class VideoPlayer {
 
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         
-        frame.add(mediaPlayerComponent);
+        frame.getContentPane().add(mediaPlayerComponent);
 
         final JButton pause = new JButton("Pause");
+        pause.setBackground(new Color(255, 255, 0));
         JButton exit = new JButton("Exit");
+        exit.setBackground(new Color(255, 255, 0));
         final JProgressBar progress = new JProgressBar();
         
         JPanel pauseExit = new JPanel();
+        pauseExit.setBackground(new Color(100, 149, 237));
         
         pauseExit.add(pause, JPanel.LEFT_ALIGNMENT);
         pauseExit.add(exit, JPanel.RIGHT_ALIGNMENT);
@@ -51,7 +55,7 @@ public class VideoPlayer {
         menu.add(progress);
         menu.add(pauseExit);
         
-        frame.add(menu, BorderLayout.SOUTH);
+        frame.getContentPane().add(menu, BorderLayout.SOUTH);
         
         pause.addActionListener(new ActionListener() {
 
