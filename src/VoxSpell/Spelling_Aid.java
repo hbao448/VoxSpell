@@ -277,11 +277,9 @@ public class Spelling_Aid extends JFrame {
 		super("Spelling Aid");
 		setBackground(Color.WHITE);
 		setSize(400, 400);
-		GridLayout layout = new GridLayout(2, 2);
 
 		JPanel menu = new JPanel();
 		menu.setBounds(0, 150, 400, 215);
-		menu.setLayout(layout);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// Finds out all of the levels in the word list and stores in a JComboBox
@@ -299,6 +297,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		quiz.setBounds(0, 0, 200, 107);
 
 		quiz.addActionListener(new ActionListener() {
 
@@ -309,6 +308,7 @@ public class Spelling_Aid extends JFrame {
 						JOptionPane.YES_NO_OPTION);
 
 				if (defaultList == JOptionPane.YES_OPTION) {
+					wordlist = new File("resources/NZCER-spelling-lists.txt");
 					selectLV.removeAllItems();
 					try {
 						for (String level : scanLevels("resources/NZCER-spelling-lists.txt")) {
@@ -397,6 +397,7 @@ public class Spelling_Aid extends JFrame {
 				}
 			}
 		});
+		review.setBounds(200, 0, 200, 107);
 		review.addActionListener(new ActionListener() {
 
 			@Override
@@ -414,6 +415,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		statistics.setBounds(0, 107, 200, 107);
 		statistics.addActionListener(new ActionListener() {
 
 			@Override
@@ -425,6 +427,7 @@ public class Spelling_Aid extends JFrame {
 			}
 
 		});
+		clear.setBounds(200, 107, 200, 107);
 		clear.addActionListener(new ActionListener() {
 
 			@Override
@@ -455,10 +458,12 @@ public class Spelling_Aid extends JFrame {
 		// Adds the list of available voices in /usr/share/festival/english to an Array
 		// and puts it in a JComboBox
 		// Original code by David
-		String[] subDirectories = listDirectories(_voicePath + "/english");
+		/*String[] subDirectories = listDirectories(_voicePath + "/english");
 		for(String voices : subDirectories){
 			_availableVoices.add(voices);
-		}
+		}*/
+		
+		_availableVoices.add("NZ");
 
 		selectVoices = new JComboBox(_availableVoices.toArray());
 
@@ -470,6 +475,7 @@ public class Spelling_Aid extends JFrame {
 				_selectedVoice = selectedvoice;
 			}
 		});
+		menu.setLayout(null);
 
 		menu.add(quiz);
 		menu.add(review);
@@ -555,18 +561,15 @@ public class Spelling_Aid extends JFrame {
 		getContentPane().add(options);
 
 		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(0, 0, 400, 148);
 		ImageIcon image = new ImageIcon("resources/Logo.png");
 
 		lblNewLabel.setIcon(image);
-
-		lblNewLabel.setBounds(0, 0, 400, 148);
 		getContentPane().add(lblNewLabel);
 
 		setResizable(false);
 		setLocationRelativeTo(null);
 
-		// Clears the statistics when first started up, so past data is not saved
-		clearStatistics();
 	}
 
 	/**
@@ -614,7 +617,7 @@ public class Spelling_Aid extends JFrame {
 			bw = new BufferedWriter(new FileWriter(".results", true));
 
 			// Writes the level and score to the results file
-			bw.write("Level" + level + " " + score);
+			bw.write("Level" + level + "\t" + score + "\t" + wordlist.getAbsolutePath());
 			bw.newLine();
 
 		} catch (IOException e) {

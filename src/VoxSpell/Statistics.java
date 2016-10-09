@@ -24,7 +24,7 @@ public class Statistics{
 	private Spelling_Aid _spelling_Aid;
 	private JTable table;
 	private static DecimalFormat df = new DecimalFormat("#.#");
-	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts"};
+	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts", "Wordlist File"};
 
 	public Statistics(Spelling_Aid spelling_Aid) {
 		_spelling_Aid = spelling_Aid;
@@ -40,7 +40,7 @@ public class Statistics{
 		if (table != null) {
 
 			frame = new JFrame("Statistics");
-			frame.setSize(500,400);
+			frame.setSize(1200,400);
 			frame.setLocationRelativeTo(null);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -115,11 +115,22 @@ public class Statistics{
 			_spelling_Aid.setVisible(true);
 		} else {
 			// Stores the results for every level as a HashMap with a 3 element array representing passed, failed and total score
-			HashMap<Integer, Integer[]> stats = new HashMap<Integer, Integer[]>();
-			ArrayList<Integer> levels = new ArrayList<Integer>();
-
+			HashMap<String, HashMap<Integer, Integer[]>> stats1 = new HashMap<String, HashMap<Integer, Integer[]>>();
+			HashMap<String, ArrayList<Integer>> levelMap = new HashMap<String, ArrayList<Integer>>();
+			ArrayList<String> fileNames = new ArrayList<String>();
+			
 			for (String result : results) {
-				String[] split = result.split(" ");
+				String[] split = result.split("\t");
+				
+					if (!stats1.containsKey(split[2])) {
+						stats1.put(split[2], new HashMap<Integer, Integer[]>());
+						levelMap.put(split[2], new ArrayList<Integer>());
+						fileNames.add(split[2]);
+					}
+					
+					HashMap<Integer, Integer[]> stats = stats1.get(split[2]);
+					ArrayList<Integer> levels = levelMap.get(split[2]);
+						
 					int levelKey = Integer.parseInt(split[0].substring(5));
 					// If the HashMap does not contain the current level, add it along with a [0,0,0] array
 					if (!stats.containsKey(levelKey)) {
@@ -145,17 +156,24 @@ public class Statistics{
 				
 			}
 
+			int rows = 0;
 			// Sorts the levels in ascending order
-			Collections.sort(levels);
+			for (String file : fileNames) {
+				Collections.sort(levelMap.get(file));
+				rows += levelMap.get(file).size();
+			}
+			
+			Collections.sort(fileNames);
 
-			Object[][] data = new Object[levels.size()][5];
+			Object[][] data = new Object[rows][6];
 
 			int row = 0;
 
+			for (String file : fileNames) {
 			// Creates the data array used for the JTable
-			for (Integer level : levels) {
+			for (Integer level : levelMap.get(file)) {
 
-				Integer[] subtotals = stats.get(level);
+				Integer[] subtotals = stats1.get(file).get(level);
 				int total = subtotals[0] + subtotals[1];
 
 				data[row][0] = level;
@@ -169,8 +187,10 @@ public class Statistics{
 				}
 				
 				data[row][4] = total;
-
+				data[row][5] = file;
+				
 				row++;
+			}
 			}
 
 			// Makes the JTable and disallows editing and resizing
@@ -178,6 +198,7 @@ public class Statistics{
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getTableHeader().setResizingAllowed(false);
 			table.getColumnModel().getColumn(0).setPreferredWidth(40);
+			table.getColumnModel().getColumn(5).setPreferredWidth(600);
 			table.setEnabled(false);
 		}
 	}
