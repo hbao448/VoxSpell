@@ -29,7 +29,7 @@ public class Quiz {
 	protected JButton submit = new JButton("Submit");
 	private JButton close = new JButton("Main menu");
 	private JButton nextLevel = new JButton("Next level");
-	private JButton videoReward = new JButton("Reward");
+	private JButton videoReward = new JButton("Video");
 	private String currentWord = "";
 	protected int attempts;
 	private ArrayList<String> words = new ArrayList<String>();
@@ -48,6 +48,8 @@ public class Quiz {
 	private int _level;
 	protected boolean correct;
 	protected int repeats = 10;
+	private SongWorker songWorker;
+	private JButton song = new JButton("Music");
 
 	public Quiz(Spelling_Aid spelling_Aid, int level) {
 
@@ -147,10 +149,10 @@ public class Quiz {
 
 			// The user is given an option to see the words that they failed if they do not pass a level
 			// Original code by Hunter
-			if (numberCorrect < size - 1) {
+			if (numberCorrect < size - 1 || numberCorrect == 0) {
 				int response = JOptionPane.showConfirmDialog(new JFrame(),
 						"You have gotten " + numberCorrect
-						+ " words correct out of 10, would you like to see the words that you spelled incorrectly?",
+						+ " words correct out of " + size + ", would you like to see the words that you spelled incorrectly?",
 						"Failure", JOptionPane.YES_NO_OPTION);
 
 				if (response == JOptionPane.YES_OPTION) {
@@ -164,7 +166,6 @@ public class Quiz {
 					wrongWords.setEditable(false);
 
 					JScrollPane words = new JScrollPane(wrongWords);
-
 					JOptionPane.showMessageDialog(null, words,
 							"Your failed words", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -178,6 +179,7 @@ public class Quiz {
 				// If they pass the level then the user can move on to the next level or play a video reward
 				// If they are on the last level, then they are able to play the bonus video reward
 				videoReward.setEnabled(true);
+				song.setEnabled(true);
 				if (_level < _spelling_Aid.maxLevel) {
 					JOptionPane.showMessageDialog(new JFrame(),
 							"You have gotten " + numberCorrect
@@ -213,7 +215,7 @@ public class Quiz {
 		frame = new JFrame("Quiz");
 
 
-		frame.setSize(400, 450);
+		frame.setSize(500, 450);
 		frame.setLocationRelativeTo(null);
 
 		// The quiz JFrame is disposed and the main menu is unhidden once the
@@ -223,14 +225,14 @@ public class Quiz {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showConfirmDialog(null, "Would you like to save your score and return to the main menu?",
+				int choice = JOptionPane.showConfirmDialog(null, "Would you like to return to the main menu?",
 						"Exit quiz", JOptionPane.YES_NO_OPTION);
 				if (choice == JOptionPane.YES_OPTION) {
 
 					String Name = "";
 
 					while (Name != null && (Name.length() < 1 || Name.length() > 15)) {
-						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long)");
+						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long), or Cancel to exit without saving");
 					}
 
 					if (Name != null) {
@@ -322,6 +324,7 @@ public class Quiz {
 				nextLevel.setEnabled(false);
 				videoReward.setEnabled(false);
 				restart.setEnabled(false);
+				song.setEnabled(false);
 			}
 
 		});
@@ -337,14 +340,14 @@ public class Quiz {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				// unhides the main menu when the x button is pressed
-				int choice = JOptionPane.showConfirmDialog(null, "Would you like to save your score and return to the main menu?",
+				int choice = JOptionPane.showConfirmDialog(null, "Would you like to return to the main menu?",
 						"Exit quiz", JOptionPane.YES_NO_OPTION);
 				if (choice == JOptionPane.YES_OPTION) {
 
 					String Name = "";
 
 					while (Name != null && (Name.length() < 1 || Name.length() > 15)) {
-						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long)");
+						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long), or Cancel to exit without saving");
 					}
 
 					_spelling_Aid.saveScore(Name, _level, score);
@@ -406,6 +409,7 @@ public class Quiz {
 				nextLevel.setEnabled(false);
 				videoReward.setEnabled(false);
 				restart.setEnabled(false);
+				song.setEnabled(false);
 
 				incorrectWords.clear();
 				_level++;
@@ -454,6 +458,18 @@ public class Quiz {
 		});
 
 		repeat.setEnabled(false);
+		
+		song.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				song.setEnabled(false);
+				playSong();
+			}
+			
+		});
+		
+		song.setEnabled(false);
 
 		quizOptions.add(repeat);
 		quizOptions.setBackground(new Color(100, 149, 237));
@@ -462,8 +478,8 @@ public class Quiz {
 		panel.add(quizOptions, BorderLayout.EAST);
 		panel.setBackground(new Color(100, 149, 237));
 
-		options.add(close, JPanel.LEFT_ALIGNMENT);
-		options.add(restart, JPanel.RIGHT_ALIGNMENT);
+		options.add(close);
+		options.add(restart);
 		options.setBackground(new Color(100, 149, 237));
 
 		// If the quiz type is quiz, then the options for the quiz include a next level button and
@@ -472,6 +488,7 @@ public class Quiz {
 
 		options.add(nextLevel);
 		options.add(videoReward);
+		options.add(song);
 
 		nextLevel.setEnabled(false);
 		videoReward.setEnabled(false);
@@ -489,7 +506,8 @@ public class Quiz {
 		restart.setBackground(new Color(255, 255, 0));
 		nextLevel.setBackground(new Color(255, 255, 0));
 		videoReward.setBackground(new Color(255, 255, 0));
-
+		song.setBackground(new Color(255, 255, 0));
+		
 		// Sets the submit button as the default one so that the enter button can be used to submit
 		frame.getRootPane().setDefaultButton(submit);
 
@@ -546,6 +564,15 @@ public class Quiz {
 		}
 	}
 	
+	class SongWorker extends SwingWorker<Void,Void> {
+		
+		@Override
+		protected Void doInBackground() throws Exception {
+			Spelling_Aid.bashCommand("ffplay -i resources/music.mp3 -nodisp -autoexit -t 10");
+			return null;
+		}
+	}
+	
 	private void playCorrect() {
 		Worker worker = new Worker("ffplay -i resources/correct.wav -nodisp -autoexit");
 		worker.execute();
@@ -555,6 +582,12 @@ public class Quiz {
 		
 		Worker worker = new Worker("ffplay -i resources/incorrect.wav -nodisp -autoexit");
 		worker.execute();
+	}
+	
+	private void playSong() {
 		
+		songWorker = new SongWorker();
+		songWorker.execute();
+
 	}
 }
