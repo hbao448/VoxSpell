@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 public class Quiz {
 
@@ -461,7 +461,7 @@ public class Quiz {
 		panel.add(input, BorderLayout.CENTER);
 		panel.add(quizOptions, BorderLayout.EAST);
 		panel.setBackground(new Color(100, 149, 237));
-		
+
 		options.add(close, JPanel.LEFT_ALIGNMENT);
 		options.add(restart, JPanel.RIGHT_ALIGNMENT);
 		options.setBackground(new Color(100, 149, 237));
@@ -482,7 +482,7 @@ public class Quiz {
 		frame.add(panel, BorderLayout.NORTH);
 		frame.add(internal, BorderLayout.CENTER);
 		frame.add(options, BorderLayout.SOUTH);
-		
+
 		submit.setBackground(new Color(255, 255, 0));
 		repeat.setBackground(new Color(255, 255, 0));
 		close.setBackground(new Color(255, 255, 0));
@@ -511,9 +511,11 @@ public class Quiz {
 		boolean spelled = text.toLowerCase().equals(currentWord.toLowerCase());
 
 		if (spelled) {
+			playCorrect();
 			score += _level*multiplier;
 			multiplier++;
 		} else {
+			playIncorrect();
 			multiplier = 1;
 			updateInternals();
 		}
@@ -527,5 +529,32 @@ public class Quiz {
 		internal.setMultiplier(multiplier);
 		internal.setScore(score);
 		internal.setRepeats(repeats);
+	}
+
+	class Worker extends SwingWorker<Void,Void> {
+		
+		private String _command;
+		
+		public Worker(String command) {
+			_command = command;
+		}
+		
+		@Override
+		protected Void doInBackground() throws Exception {
+			Spelling_Aid.bashCommand(_command);
+			return null;
+		}
+	}
+	
+	private void playCorrect() {
+		Worker worker = new Worker("ffplay -i resources/correct.wav -nodisp -autoexit");
+		worker.execute();
+	}
+
+	private void playIncorrect() {
+		
+		Worker worker = new Worker("ffplay -i resources/incorrect.wav -nodisp -autoexit");
+		worker.execute();
+		
 	}
 }
