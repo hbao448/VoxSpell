@@ -28,8 +28,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
-
 @SuppressWarnings("serial")
 public class Spelling_Aid extends JFrame {
 
@@ -60,7 +58,6 @@ public class Spelling_Aid extends JFrame {
 	private JButton settings = new JButton("Settings");
 	private JButton changeSpeed = new JButton("Change Speaker Speed");
 	private String _defaultSpeed = "(Parameter.set 'Duration_Stretch 1.0)";
-	protected File wordlist;
 
 	public static void main(String[] Args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -88,7 +85,7 @@ public class Spelling_Aid extends JFrame {
 	 * 
 	 * @param texts The list of strings to be spoken in order
 	 */
-	public void textToSpeech(ArrayList<String> texts, boolean sound, boolean noBeep) {
+	public void textToSpeech(ArrayList<String> texts) {
 
 		BufferedWriter bw = null;
 
@@ -137,7 +134,7 @@ public class Spelling_Aid extends JFrame {
 		}
 
 		// Starts a new worker instance and executes it
-		Speaker worker = new Speaker(sound, noBeep);
+		Speaker worker = new Speaker();
 		worker.execute();
 
 	}
@@ -162,7 +159,7 @@ public class Spelling_Aid extends JFrame {
 			texts.add(letters[i] + "");
 		}
 
-		textToSpeech(texts, true, true);
+		textToSpeech(texts);
 
 	}
 
@@ -338,7 +335,7 @@ public class Spelling_Aid extends JFrame {
 					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 					int result = fileChooser.showOpenDialog(Spelling_Aid.this);
 					while (result == JFileChooser.APPROVE_OPTION) {
-						wordlist = fileChooser.getSelectedFile();
+						File wordlist = fileChooser.getSelectedFile();
 						// If the file chosen is not called "wordlist", then an error message is displayed and the user is sent back
 						// to the main menu
 						ArrayList<String> levels = scanLevels(wordlist.toString());
@@ -542,7 +539,8 @@ public class Spelling_Aid extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
-		
+		// Clears the statistics when first started up, so past data is not saved
+		clearStatistics();
 	}
 
 	/**
@@ -677,52 +675,12 @@ public class Spelling_Aid extends JFrame {
 	 */
 	class Speaker extends SwingWorker<Void, Void> {
 
-		private boolean _correct;
-		private boolean _noBeep;
-
-		public Speaker(boolean correct, boolean noBeep) {
-			_correct = correct;
-			_noBeep = noBeep;
+		public Speaker() {
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
 
-			if (!_noBeep) {
-				String command;
-				if (_correct) {
-					command = "ffmpeg -i resources/correct.wav -f alsa hw:0";
-				} else {
-					command = "ffmpeg -i resources/incorrect.wav -f alsa hw:0";
-				}
-
-				Spelling_Aid.bashCommand(command);
-				
-			}
-
-			return null;
-		}
-
-		// If the quiz is complete, then disable the submit button, otherwise
-		// re-enable the submit button
-		protected void done() {
-
-			ttsSpeaker speaker = new ttsSpeaker();
-			speaker.execute();
-			
-		}
-
-	}
-
-	class ttsSpeaker extends SwingWorker<Void, Void> {
-
-		public ttsSpeaker() {
-			
-		}
-
-		@Override
-		protected Void doInBackground() throws Exception {
-			
 			// Calls a bash command to run festival with the scheme file
 			Spelling_Aid.bashCommand("festival -b .text.scm");
 

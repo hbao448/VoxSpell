@@ -75,7 +75,7 @@ public class Quiz {
 		switch (_type) {
 		case QUIZ:
 
-			words = _spelling_Aid.readLevel(_spelling_Aid.wordlist, _level);
+			words = _spelling_Aid.readLevel(new File("resources/NZCER-spelling-lists.txt"), _level);
 
 			break;
 
@@ -127,7 +127,6 @@ public class Quiz {
 			size = words.size() < 10 ? words.size() : 10;
 			previousWords = new ArrayList<String>();
 
-			Spelling_Aid.bashCommand("rm -f .text.scm");
 			numberCorrect = 0;
 			testNum = 0;
 			updateLevelResult();
@@ -148,7 +147,6 @@ public class Quiz {
 	private void test() {
 
 		if (testNum <= size) {
-			boolean sound = correct;
 			correct = false;
 			attempts = 0;
 			repeated = false;
@@ -176,16 +174,12 @@ public class Quiz {
 
 			// Speaks the word selected
 			previousCorrect.add(currentWord);
-			if (testNum == 1) {
-				_spelling_Aid.textToSpeech(previousCorrect, true, true);
-			} else {
-				_spelling_Aid.textToSpeech(previousCorrect, sound, false);
-			}
+			_spelling_Aid.textToSpeech(previousCorrect);
 			previousCorrect.clear();
 
 		} else {
 			// Once the quiz is done, then the restart button is enabled
-			_spelling_Aid.textToSpeech(previousCorrect, correct, false);
+			_spelling_Aid.textToSpeech(previousCorrect);
 			previousCorrect.clear();
 
 			if (_type == quizType.QUIZ) {
@@ -303,7 +297,7 @@ public class Quiz {
 						output.append("Incorrect, please try again\n");
 						text.add(currentWord);
 						text.add(currentWord);
-						_spelling_Aid.textToSpeech(text, false, false);
+						_spelling_Aid.textToSpeech(text);
 
 					} else {
 						// Once they fail two times, the word is considered
@@ -318,7 +312,7 @@ public class Quiz {
 						// word being spelled out and then allowed to spell it
 						// again
 						if (_type == quizType.REVIEW) {
-							_spelling_Aid.textToSpeech(previousCorrect, false, false);
+							_spelling_Aid.textToSpeech(previousCorrect);
 							previousCorrect.clear();
 
 							int choice = JOptionPane.showConfirmDialog(null,
@@ -412,7 +406,7 @@ public class Quiz {
 					frame.dispose();
 					_spelling_Aid.setVisible(true);
 				}
-
+				
 			}
 
 			@Override
@@ -504,13 +498,13 @@ public class Quiz {
 				submit.setEnabled(false);
 				ArrayList<String> text = new ArrayList<String>();
 				text.add(currentWord);
-				_spelling_Aid.textToSpeech(text, true, true);
+				_spelling_Aid.textToSpeech(text);
 			}
 
 		});
 
 		repeat.setEnabled(false);
-
+		
 		quizOptions.add(repeat);
 
 		// If the quiz type is quiz, then the user's stats for the level are shown
@@ -558,10 +552,7 @@ public class Quiz {
 	 */
 	protected boolean spellcheck(String text) {
 		attempts++;
-
-		boolean correctlySpelled = text.toLowerCase().equals(currentWord.toLowerCase());
-
-		return correctlySpelled;
+		return text.toLowerCase().equals(currentWord.toLowerCase());
 	}
 
 	/**
