@@ -37,6 +37,7 @@ public class Spelling_Aid extends JFrame {
 	private JButton hiscores = new JButton("View Hiscores");
 	private JButton statistics = new JButton("View Statistics");
 	private JButton clear = new JButton("Clear Statistics");
+	private Hiscores _hiscores;
 	private Quiz _quiz;
 	private Statistics _statistics;
 	@SuppressWarnings("rawtypes")
@@ -403,8 +404,9 @@ public class Spelling_Aid extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
-				
+				_hiscores = new Hiscores(Spelling_Aid.this);
+				setVisible(false);
+				_hiscores.viewScores();
 			}
 
 		});
@@ -555,7 +557,7 @@ public class Spelling_Aid extends JFrame {
 		getContentPane().add(menu);
 		getContentPane().add(options);
 
-		JLabel lblNewLabel = new JLabel("New label");
+		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setBounds(0, 0, 400, 148);
 		ImageIcon image = new ImageIcon("resources/Logo.png");
 
@@ -585,6 +587,15 @@ public class Spelling_Aid extends JFrame {
 		}
 
 		file = new File(".failed");
+
+		file.delete();
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+
+		}
+		
+		file = new File(".scores");
 
 		file.delete();
 		try {

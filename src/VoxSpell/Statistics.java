@@ -40,7 +40,7 @@ public class Statistics{
 		if (table != null) {
 
 			frame = new JFrame("Statistics");
-			frame.setSize(1200,400);
+			frame.setSize(800,400);
 			frame.setLocationRelativeTo(null);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -198,7 +198,7 @@ public class Statistics{
 			table.getTableHeader().setReorderingAllowed(false);
 			table.getTableHeader().setResizingAllowed(false);
 			table.getColumnModel().getColumn(0).setPreferredWidth(40);
-			table.getColumnModel().getColumn(5).setPreferredWidth(600);
+			table.getColumnModel().getColumn(5).setPreferredWidth(300);
 			table.setEnabled(false);
 		}
 	}

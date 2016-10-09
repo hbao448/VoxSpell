@@ -232,8 +232,9 @@ public class Quiz {
 						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long)");
 					}
 
-					_spelling_Aid.saveScore(Name, _level, score);
-
+					if (Name != null) {
+						_spelling_Aid.saveScore(Name, _level, score);
+					}
 
 					frame.dispose();
 					_spelling_Aid.setVisible(true);
