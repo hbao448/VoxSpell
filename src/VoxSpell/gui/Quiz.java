@@ -68,6 +68,7 @@ public class Quiz extends AbstractScreen{
 	private final JLabel playerName = new JLabel();
 	private final JLabel wordlistLabel = new JLabel();
 	private final JLabel wordlistName = new JLabel();
+	private JButton hint = new JButton("Hint");
 
 	public Quiz(MainFrame mainFrame, int level, String name) {
 
@@ -133,6 +134,8 @@ public class Quiz extends AbstractScreen{
 	private void test() {
 
 		if (testNum <= size) {
+			hint.setEnabled(true);
+			internal.disableHint();
 			updateInternals();
 			setCorrect(false);
 			setAttempts(0);
@@ -165,6 +168,7 @@ public class Quiz extends AbstractScreen{
 			previousCorrect.clear();
 			testNum = size;
 			updateInternals();
+			hint.setEnabled(false);
 
 			// The user is given an option to see the words that they failed if they do not pass a level
 			// Original code by Hunter
@@ -189,11 +193,11 @@ public class Quiz extends AbstractScreen{
 							"Your failed words", JOptionPane.INFORMATION_MESSAGE);
 				}
 
-				scorer.appendList(_level, numberCorrect);
+				scorer.appendList(_level, numberCorrect, size);
 
 			} else {
 
-				scorer.appendList(_level, numberCorrect);
+				scorer.appendList(_level, numberCorrect, size);
 
 				// If they pass the level then the user can move on to the next level or play a video reward
 				// If they are on the last level, then they are able to play the bonus video reward
@@ -202,14 +206,14 @@ public class Quiz extends AbstractScreen{
 				if (_level < wordlist.getMaxLevel()) {
 					JOptionPane.showMessageDialog(new JFrame(),
 							"You have gotten " + numberCorrect
-							+ " words correct out of 10, you may choose to play a video reward, or proceed directly to the next level",
+							+ " words correct out of " + size + ", you may choose to play a video reward, or proceed directly to the next level",
 							"Pass", JOptionPane.INFORMATION_MESSAGE);
 					nextLevel.setEnabled(true);
 
 				} else {
 					JOptionPane.showMessageDialog(new JFrame(),
 							"You have gotten " + numberCorrect
-							+ " words correct out of 10, you may choose to play the bonus video reward! You have passed the final level, congratulations!",
+							+ " words correct out of " + size + ", you may choose to play the bonus video reward! You have passed the final level, congratulations!",
 							"Pass", JOptionPane.INFORMATION_MESSAGE);
 
 				}
@@ -470,7 +474,7 @@ public class Quiz extends AbstractScreen{
 		});
 
 		JPanel panel = new JPanel();
-		panel.setBounds(180, 260, 500, 33);
+		panel.setBounds(130, 260, 560, 33);
 		internal.add(panel);
 		input.setBounds(0, 0, 353, 33);
 
@@ -481,7 +485,7 @@ public class Quiz extends AbstractScreen{
 		submit.setEnabled(false);
 
 		JPanel quizOptions = new JPanel();
-		quizOptions.setBounds(353, -4, 147, 33);
+		quizOptions.setBounds(353, -4, 210, 33);
 		quizOptions.setOpaque(false);
 		quizOptions.add(submit);
 
@@ -506,6 +510,22 @@ public class Quiz extends AbstractScreen{
 		repeat.setEnabled(false);
 
 		quizOptions.add(repeat);
+		
+		hint.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				input.requestFocus();
+				hint.setEnabled(false);
+				multiplier = 1;
+				updateInternals();
+				internal.showHint(currentWord);
+			}
+			
+		});
+		
+		quizOptions.add(hint);
+		
 		panel.setLayout(null);
 		panel.setOpaque(false);
 		//quizOptions.setBackground(new Color(100, 149, 237));

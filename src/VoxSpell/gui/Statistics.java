@@ -131,7 +131,7 @@ public class Statistics extends AbstractScreen{
 					
 					int score = Integer.parseInt(split[1]);
 
-					if(score >= 9){
+					if(split[3].equals("Pass")){
 						stats.get(levelKey)[0]++;
 					} else {
 						stats.get(levelKey)[1]++;

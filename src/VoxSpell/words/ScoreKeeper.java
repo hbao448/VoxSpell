@@ -84,8 +84,9 @@ public class ScoreKeeper {
 	 * 
 	 * @param level
 	 * @param score
+	 * @param size 
 	 */
-	public void appendList(int level, int score) {
+	public void appendList(int level, int score, int size) {
 
 		BufferedWriter bw = null;
 
@@ -93,8 +94,16 @@ public class ScoreKeeper {
 			// Opens the .results file for appending
 			bw = new BufferedWriter(new FileWriter(".results", true));
 
+			String passed;
+			
+			if ((size - score) > 1 || score == 0) {
+				passed = "Fail";
+			} else {
+				passed = "Pass";
+			}
+			
 			// Writes the level and score to the results file
-			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getWordlistFile().getName());
+			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getWordlistFile().getName() + "\t" + passed);
 			bw.newLine();
 
 		} catch (IOException e) {

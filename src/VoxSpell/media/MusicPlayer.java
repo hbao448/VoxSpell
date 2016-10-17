@@ -18,7 +18,6 @@ public class MusicPlayer{
 
 	private Clip clip;
 	private long currentLength;
-	private Quiz quiz;
 
 	public MusicPlayer(boolean reward) {
 		if (reward) {
@@ -36,7 +35,7 @@ public class MusicPlayer{
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			volume.setValue(-25);
+			volume.setValue(-35);
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 		}
@@ -65,7 +64,7 @@ public class MusicPlayer{
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			volume.setValue(-25);
+			volume.setValue(-35);
 			clip.start();
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
@@ -73,8 +72,7 @@ public class MusicPlayer{
 	}
 	
 	public void setQuiz(Quiz quiz) {
-		this.quiz = quiz;
-		
+
 		clip.addLineListener(new LineListener(){
 
 			@Override
