@@ -26,6 +26,7 @@ public class QuizInternal extends JPanel {
 	 */
 	public QuizInternal() {
 		//setBackground(new Color(100, 149, 237));
+		setOpaque(false);
 		setLayout(null);
 		
 		progressBar = new JProgressBar();

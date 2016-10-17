@@ -112,7 +112,7 @@ public class MainMenu extends AbstractScreen {
 
 		panel.add(comboBox);
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
-		logo.setOpaque(true);
+		//logo.setOpaque(true);
 		logo.setForeground(new Color(100, 149, 237));
 		//logo.setBackground(new Color(100, 149, 237));
 		logo.setBounds(0, 0, 800, 150);

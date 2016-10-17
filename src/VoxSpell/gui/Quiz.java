@@ -247,7 +247,7 @@ public class Quiz extends AbstractScreen{
 						rewardPlayer.togglePlayback();
 						toggleSongText(false);
 					}
-					
+
 					_spelling_Aid.removeSoundListener(al);
 					_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
 
@@ -273,7 +273,9 @@ public class Quiz extends AbstractScreen{
 				nextLevel.setEnabled(false);
 				videoReward.setEnabled(false);
 				restart.setEnabled(false);
-				song.setEnabled(false);
+				if (song.getText().equals("Music")) {
+					song.setEnabled(false);
+				}
 			}
 
 		});
@@ -285,7 +287,7 @@ public class Quiz extends AbstractScreen{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				videoReward.setEnabled(false);
-				
+
 				if (player.isPlaying()) {
 					player.togglePlayback();
 					_spelling_Aid.toggleButton(false);
@@ -295,7 +297,7 @@ public class Quiz extends AbstractScreen{
 					rewardPlayer.togglePlayback();
 					toggleSongText(false);
 				}
-				
+
 				if (_level < wordlist.getMaxLevel()) {
 					@SuppressWarnings("unused")
 					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/big_buck_bunny_1_minute.avi", _spelling_Aid);
@@ -321,7 +323,10 @@ public class Quiz extends AbstractScreen{
 				nextLevel.setEnabled(false);
 				videoReward.setEnabled(false);
 				restart.setEnabled(false);
-				song.setEnabled(false);
+
+				if(song.getText().equals("Music")) {
+					song.setEnabled(false);
+				}
 
 				incorrectWords.clear();
 				_level++;
@@ -357,7 +362,7 @@ public class Quiz extends AbstractScreen{
 				}
 			}
 		});
-		
+
 		al = new ActionListener() {
 
 			@Override
@@ -368,9 +373,9 @@ public class Quiz extends AbstractScreen{
 				}
 			}
 		};
-		
+
 		_spelling_Aid.addSoundListener(al);
-		
+
 		//song.setEnabled(false);
 		//panel.setBackground(new Color(100, 149, 237));
 		options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -392,7 +397,7 @@ public class Quiz extends AbstractScreen{
 		restart.setEnabled(false);
 
 		internal = new QuizInternal();
-		internal.setBounds(0, 0, 800, 550);
+		internal.setBounds(0,0, 800, 550);
 		setLayout(null);
 		add(internal);
 
@@ -459,7 +464,7 @@ public class Quiz extends AbstractScreen{
 		});
 
 		JPanel panel = new JPanel();
-		panel.setBounds(180, 262, 500, 33);
+		panel.setBounds(180, 224, 500, 33);
 		internal.add(panel);
 		input.setBounds(0, 0, 353, 33);
 
@@ -586,7 +591,7 @@ public class Quiz extends AbstractScreen{
 	public void setSubmitAsDefault() {
 		_spelling_Aid.getRootPane().setDefaultButton(submit);
 	}
-	
+
 	public void toggleSongText(boolean playing) {
 		if (playing) {
 			song.setText("Stop");

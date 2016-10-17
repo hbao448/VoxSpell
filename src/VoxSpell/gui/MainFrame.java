@@ -1,6 +1,7 @@
 package VoxSpell.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ import VoxSpell.media.MusicPlayer;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
-	AbstractScreen _screen;
+	private AbstractScreen _screen;
 	@SuppressWarnings("rawtypes")
 	private JComboBox selectLV;
 	@SuppressWarnings("rawtypes")
@@ -56,20 +57,12 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		super("VoxSpell");
-		setBackground(new Color(100, 149, 237));
-		setSize(800, 600);
-
-		JPanel menu = new JPanel();
-		menu.setBackground(new Color(100, 149, 237));
+		//setBackground(new Color(100, 149, 237));
+		//setSize(800, 600);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
-		getContentPane().setLayout(null);
-		getContentPane().add(menu);
-
 		setResizable(false);
-		setLocationRelativeTo(null);
 
 		settings = new SettingsData();
 
@@ -81,26 +74,21 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		bgmPlayback.setBounds(734, 11, 50, 50);
-		getContentPane().add(bgmPlayback);
+		bgmPlayback.setBounds(740, 10, 50, 50);
 		bgmPlayback.setFocusable(false);
 
 		setScreen(new MainMenu(this));
-
+		setLocationRelativeTo(null);
 		player = new MusicPlayer(false);
 		toggleButton(true);
 	}
 
 	public void setScreen(AbstractScreen screen) {
-		if (_screen != null) {
-			remove(_screen);
-		}
-		getContentPane().add(screen);
-		_screen = screen;
-		_screen.setBounds(0, 0, 800, 600);
+		setContentPane(screen);
+		getContentPane().add(bgmPlayback);
+		pack();
 		revalidate();
 		repaint();
-
 	}
 
 	public SettingsData getSettings() {
