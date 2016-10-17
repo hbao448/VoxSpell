@@ -6,20 +6,24 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.UIManager;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class QuizInternal extends JPanel {
 
 	private JProgressBar progressBar;
-	private JLabel lblRepeatsLeft;
-	private JLabel lblMultiplier;
-	private JLabel lblScore;
-	private JLabel lblMultiplierNumber;
-	private JLabel lblScoreNumber;
-	private JLabel lblLevel;
-	private JLabel lblWord;
-	private JLabel lblLevelnumber;
-	private JLabel lblWordnumber;
+	private JLabel repeatsLeftLabel;
+	private JLabel multiplierLabel;
+	private JLabel ScoreLabel;
+	private JLabel multiplierNumberLabel;
+	private JLabel scoreNumberLabel;
+	private JLabel levelLabel;
+	private JLabel wordLabel;
+	private JLabel levelNumberLabel;
+	private JLabel wordNumberLabel;
+	private JLabel highscoreLabel;
 
 	/**
 	 * Create the panel.
@@ -30,74 +34,89 @@ public class QuizInternal extends JPanel {
 		setLayout(null);
 		
 		progressBar = new JProgressBar();
-		progressBar.setValue(34);
 		progressBar.setStringPainted(true);
-		progressBar.setBounds(215, 169, 146, 22);
+		progressBar.setBounds(500, 200, 200, 40);
 		add(progressBar);
 		
-		lblRepeatsLeft = new JLabel("Repeats Left");
-		lblRepeatsLeft.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblRepeatsLeft.setBounds(217, 133, 144, 25);
-		add(lblRepeatsLeft);
+		repeatsLeftLabel = new JLabel("");
+		repeatsLeftLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		repeatsLeftLabel.setIcon(new ImageIcon("resources/Repeats.png"));
+		repeatsLeftLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		repeatsLeftLabel.setBounds(150, 200, 300, 40);
+		add(repeatsLeftLabel);
 		
-		lblMultiplier = new JLabel("Score Multiplier");
-		lblMultiplier.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblMultiplier.setBounds(215, 358, 162, 25);
-		add(lblMultiplier);
+		multiplierLabel = new JLabel("");
+		multiplierLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		multiplierLabel.setIcon(new ImageIcon("resources/Multiplier.png"));
+		multiplierLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		multiplierLabel.setBounds(10, 400, 360, 40);
+		add(multiplierLabel);
 		
-		lblScore = new JLabel("Score");
-		lblScore.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblScore.setBounds(215, 434, 110, 22);
-		add(lblScore);
+		ScoreLabel = new JLabel("");
+		ScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		ScoreLabel.setIcon(new ImageIcon("resources/Score.png"));
+		ScoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		ScoreLabel.setBounds(10, 450, 140, 40);
+		add(ScoreLabel);
 		
-		lblMultiplierNumber = new JLabel("2 x");
-		lblMultiplierNumber.setForeground(Color.BLACK);
-		lblMultiplierNumber.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblMultiplierNumber.setBounds(403, 342, 93, 50);
-		add(lblMultiplierNumber);
+		multiplierNumberLabel = new JLabel("1 x");
+		multiplierNumberLabel.setForeground(Color.BLACK);
+		multiplierNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
+		multiplierNumberLabel.setBounds(380, 400, 100, 40);
+		add(multiplierNumberLabel);
 		
-		lblScoreNumber = new JLabel("20000");
-		lblScoreNumber.setForeground(Color.BLACK);
-		lblScoreNumber.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblScoreNumber.setBounds(403, 420, 138, 50);
-		add(lblScoreNumber);
+		scoreNumberLabel = new JLabel("100");
+		scoreNumberLabel.setForeground(Color.BLACK);
+		scoreNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
+		scoreNumberLabel.setBounds(160, 450, 150, 40);
+		add(scoreNumberLabel);
 		
-		lblLevel = new JLabel("Level");
-		lblLevel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblLevel.setBounds(223, 85, 59, 26);
-		add(lblLevel);
+		levelLabel = new JLabel("");
+		levelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		levelLabel.setIcon(new ImageIcon("resources/Level.png"));
+		levelLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		levelLabel.setBounds(10, 110, 130, 40);
+		add(levelLabel);
 		
-		lblWord = new JLabel("Word");
-		lblWord.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblWord.setBounds(443, 169, 78, 22);
-		add(lblWord);
+		wordLabel = new JLabel("");
+		wordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		wordLabel.setIcon(new ImageIcon("resources/Word.png"));
+		wordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		wordLabel.setBounds(360, 110, 130, 40);
+		add(wordLabel);
 		
-		lblLevelnumber = new JLabel("LevelNumber");
-		lblLevelnumber.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblLevelnumber.setBounds(292, 80, 146, 37);
-		add(lblLevelnumber);
+		levelNumberLabel = new JLabel("1");
+		levelNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
+		levelNumberLabel.setBounds(150, 110, 146, 40);
+		add(levelNumberLabel);
 		
-		lblWordnumber = new JLabel("WordNumber");
-		lblWordnumber.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblWordnumber.setBounds(531, 167, 144, 24);
-		add(lblWordnumber);
+		wordNumberLabel = new JLabel("X of X");
+		wordNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
+		wordNumberLabel.setBounds(500, 110, 144, 40);
+		add(wordNumberLabel);
+		
+		highscoreLabel = new JLabel("");
+		highscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		highscoreLabel.setIcon(new ImageIcon("resources/Highscore.png"));
+		highscoreLabel.setBounds(320, 450, 350, 40);
+		add(highscoreLabel);
 
 	}
 	
 	public void setWord(int wordNumber, int total) {
-		lblWordnumber.setText(wordNumber + " of " + total);
+		wordNumberLabel.setText(wordNumber + " of " + total);
 	}
 	
 	public void setLevel(int level) {
-		lblLevelnumber.setText(level+"");
+		levelNumberLabel.setText(level+"");
 	}
 	
 	public void setScore(int score) {
-		lblScoreNumber.setText(score+"");
+		scoreNumberLabel.setText(score+"");
 	}
 	
 	public void setMultiplier(int multiplier) {
-		lblMultiplierNumber.setText(multiplier + " x");
+		multiplierNumberLabel.setText(multiplier + " x");
 	}
 	
 	public void setRepeats(int repeats) {

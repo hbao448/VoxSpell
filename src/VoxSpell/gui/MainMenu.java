@@ -11,10 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import VoxSpell.festival.Festival;
+import VoxSpell.gui.Statistics.EmptyStatsException;
 import VoxSpell.words.ScoreKeeper;
 import VoxSpell.words.Wordlist;
 
 import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class MainMenu extends AbstractScreen {
@@ -23,23 +26,25 @@ public class MainMenu extends AbstractScreen {
 	private JButton hiscores = new JButton("View Hiscores");
 	private JButton statistics = new JButton("View Statistics");
 	private JButton clear = new JButton("Clear Statistics");
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 	private JButton exit = new JButton("Exit");
 	private JButton settings = new JButton("Settings");
 	private final JLabel logo = new JLabel();
 	private final JPanel options = new JPanel();
-	private JComboBox comboBox;
+	private JComboBox levelSelect;
 	private int _level = 1;
+	private JTextField nameInput;
+	private final JLabel invalidNameLabel = new JLabel("<html>Please enter a name between<br>1 and 15 letters long!</html>");
 
-	public MainMenu(MainFrame spelling_aid) {
-		_spelling_Aid = spelling_aid;
+	public MainMenu(MainFrame mainFrame) {
+		_mainFrame = mainFrame;
 		setLayout(null);
-
+	
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 150, 800, 350);
 		add(panel);
 		panel.setLayout(null);
-
+		panel.setOpaque(false);
 
 		panel.add(quiz);
 		panel.add(hiscores);
@@ -48,13 +53,13 @@ public class MainMenu extends AbstractScreen {
 
 		hiscores.setToolTipText("View the current high scores");
 		//hiscores.setBackground(new Color(255, 255, 0));
-		hiscores.setBounds(400, 0, 400, 175);
+		hiscores.setBounds(275, 180, 250, 50);
 		hiscores.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				_spelling_Aid.setScreen(new Hiscores(_spelling_Aid));
+				_mainFrame.setScreen(new Hiscores(_mainFrame));
 
 			}
 
@@ -62,43 +67,52 @@ public class MainMenu extends AbstractScreen {
 
 		quiz.setToolTipText("Starts a new spelling quiz");
 		//quiz.setBackground(new Color(255, 255, 0));
-		quiz.setBounds(120, 0, 280, 175);
+		quiz.setBounds(275, 120, 250, 50);
 
 		quiz.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Quiz quizScreen = new Quiz(_spelling_Aid, _level);
-				_spelling_Aid.setScreen(quizScreen);
-				quizScreen.setSubmitAsDefault();
-				quizScreen.startQuiz();
+				if (nameInput.getText().length() < 1 || nameInput.getText().length() > 15) {
+					invalidNameLabel.setVisible(true);
+				} else {
+					Quiz quizScreen = new Quiz(_mainFrame, _level, nameInput.getText());
+					_mainFrame.setScreen(quizScreen);
+					quizScreen.setSubmitAsDefault();
+					quizScreen.startQuiz();
+				}
 			}
 
 		});
 
 		statistics.setToolTipText("View the pass rates for each level");
 		//statistics.setBackground(new Color(255, 255, 0));
-		statistics.setBounds(0, 175, 400, 175);
+		statistics.setBounds(275, 240, 250, 50);
 		statistics.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Shows the statistics and hides the main menu
-				Statistics statsScreen = new Statistics(_spelling_Aid);
-				_spelling_Aid.setScreen(statsScreen);
+				Statistics statsScreen;
+				try {
+					statsScreen = new Statistics(_mainFrame);
+					_mainFrame.setScreen(statsScreen);
+				} catch (EmptyStatsException e1) {
+				}			
 			}
 
 		});
 		clear.setToolTipText("Clear all saved statistics and scores");
 		//clear.setBackground(new Color(255, 255, 0));
-		clear.setBounds(400, 175, 400, 175);
+		clear.setBounds(275, 300, 250, 50);
 		try {
-			comboBox = new JComboBox(_spelling_Aid.getSettings().getWordlist().scanLevels().toArray());
+			levelSelect = new JComboBox(_mainFrame.getSettings().getWordlist().scanLevels().toArray());
+			levelSelect.setToolTipText("Select the level to start the spelling quiz from");
 		} catch (Exception e1) {
-			comboBox = new JComboBox();
+			levelSelect = new JComboBox();
 			e1.printStackTrace();
 		}
-		comboBox.addActionListener(new ActionListener() {
+		levelSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox lv = (JComboBox) e.getSource();
 				String selectedlv = (String) lv.getSelectedItem();
@@ -108,16 +122,41 @@ public class MainMenu extends AbstractScreen {
 				}
 			}
 		});
-		comboBox.setBounds(0, 0, 120, 175);
+		levelSelect.setBounds(410, 59, 250, 50);
 
-		panel.add(comboBox);
+		panel.add(levelSelect);
+
+		nameInput = new JTextField();
+		nameInput.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nameInput.setBounds(140, 59, 250, 50);
+		panel.add(nameInput);
+		nameInput.setColumns(10);
+
+		JLabel levelLabel = new JLabel();
+		levelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		levelLabel.setBounds(410, 10, 250, 38);
+		panel.add(levelLabel);
+		ImageIcon level = new ImageIcon("resources/Level.png");
+		levelLabel.setIcon(level);
+
+		JLabel nameLabel = new JLabel();
+		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		nameLabel.setBounds(140, 10, 250, 38);
+		panel.add(nameLabel);
+		ImageIcon name = new ImageIcon("resources/Name.png");
+		nameLabel.setIcon(name);
+		invalidNameLabel.setBounds(62, 120, 179, 50);
+		invalidNameLabel.setVisible(false);
+		
+		panel.add(invalidNameLabel);
+
+
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		//logo.setOpaque(true);
 		logo.setForeground(new Color(100, 149, 237));
 		//logo.setBackground(new Color(100, 149, 237));
 		logo.setBounds(0, 0, 800, 150);
 		ImageIcon image = new ImageIcon("resources/Logo.png");
-
 		logo.setIcon(image);
 
 		add(logo);
@@ -138,12 +177,8 @@ public class MainMenu extends AbstractScreen {
 					// If they choose yes then their statistics are cleared and
 					// a message is displayed telling them so
 					ScoreKeeper.clearStatistics();
-
-
 				}
-
 			}
-
 		});
 		exit.setBounds(500, 25, 100, 50);
 
@@ -169,11 +204,12 @@ public class MainMenu extends AbstractScreen {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				_spelling_Aid.setScreen(new Settings(_spelling_Aid));
+				_mainFrame.setScreen(new Settings(_mainFrame));
 			}
 
 		});
 		options.setLayout(null);
+		options.setOpaque(false);
 
 		options.add(exit);
 		options.add(settings);

@@ -24,10 +24,13 @@ import VoxSpell.media.MusicPlayer;
 import VoxSpell.media.SoundBuzzer;
 import VoxSpell.words.ScoreKeeper;
 import VoxSpell.words.Wordlist;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class Quiz extends AbstractScreen{
 
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 	private JTextField input = new JTextField();
 	private JButton restart = new JButton("Restart");
 	protected JButton submit = new JButton("Submit");
@@ -59,15 +62,21 @@ public class Quiz extends AbstractScreen{
 	private ScoreKeeper scorer;
 	private Wordlist wordlist;
 	protected ActionListener al;
+	private String _name;
+	private final JLabel playerLabel = new JLabel();
+	private final JLabel playerName = new JLabel();
+	private final JLabel wordlistLabel = new JLabel();
+	private final JLabel wordlistName = new JLabel();
 
-	public Quiz(MainFrame spelling_Aid, int level) {
+	public Quiz(MainFrame mainFrame, int level, String name) {
 
-		_spelling_Aid = spelling_Aid;
+		_name = name;
+		_mainFrame = mainFrame;
 		_level = level;
-		_festival = _spelling_Aid.getSettings().getFestival();
+		_festival = _mainFrame.getSettings().getFestival();
 		_festival.setQuiz(this);
-		scorer = new ScoreKeeper(_spelling_Aid.getSettings());
-		wordlist = _spelling_Aid.getSettings().getWordlist();
+		scorer = new ScoreKeeper(_mainFrame.getSettings());
+		wordlist = _mainFrame.getSettings().getWordlist();
 		setUp();
 
 	}
@@ -85,7 +94,7 @@ public class Quiz extends AbstractScreen{
 
 		Bash.bashCommand("rm -f .text.scm");
 
-		words = _spelling_Aid.getSettings().getWordlist().readLevel(_level);
+		words = _mainFrame.getSettings().getWordlist().readLevel(_level);
 
 
 		// Displays an error message if the file is empty
@@ -93,7 +102,7 @@ public class Quiz extends AbstractScreen{
 
 			JOptionPane.showMessageDialog(new JFrame(), "Error, no words in level " + _level, "Error",
 					JOptionPane.ERROR_MESSAGE);
-			_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
+			_mainFrame.setScreen(new MainMenu(_mainFrame));
 
 
 		} 
@@ -229,30 +238,23 @@ public class Quiz extends AbstractScreen{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int choice = JOptionPane.showConfirmDialog(null, "Would you like to return to the main menu?",
+				int choice = JOptionPane.showConfirmDialog(null, "Would you like to save your score?",
 						"Exit quiz", JOptionPane.YES_NO_OPTION);
 				if (choice == JOptionPane.YES_OPTION) {
 
-					String Name = "";
-
-					while (Name != null && (Name.length() < 1 || Name.length() > 15)) {
-						Name = JOptionPane.showInputDialog("Please enter the name to save the score under (1 to 15 characters long), or Cancel to exit without saving");
-					}
-
-					if (Name != null) {
-						scorer.saveScore(Name, _level, score);
-					}
-
-					if (rewardPlayer != null && rewardPlayer.isPlaying()) {
-						rewardPlayer.togglePlayback();
-						toggleSongText(false);
-					}
-
-					_spelling_Aid.removeSoundListener(al);
-					_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
-
+					scorer.saveScore(_name, _level, score);
 				}
+
+				if (rewardPlayer != null && rewardPlayer.isPlaying()) {
+					rewardPlayer.togglePlayback();
+					toggleSongText(false);
+				}
+
+				_mainFrame.removeSoundListener(al);
+				_mainFrame.setScreen(new MainMenu(_mainFrame));
+
 			}
+
 
 		});
 
@@ -290,8 +292,8 @@ public class Quiz extends AbstractScreen{
 
 				if (player.isPlaying()) {
 					player.togglePlayback();
-					_spelling_Aid.toggleButton(false);
-					_spelling_Aid.toggleSoundButton(false);
+					_mainFrame.toggleButton(false);
+					_mainFrame.toggleSoundButton(false);
 				}
 				if (rewardPlayer != null && rewardPlayer.isPlaying()) {
 					rewardPlayer.togglePlayback();
@@ -300,13 +302,13 @@ public class Quiz extends AbstractScreen{
 
 				if (_level < wordlist.getMaxLevel()) {
 					@SuppressWarnings("unused")
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/big_buck_bunny_1_minute.avi", _spelling_Aid);
-					_spelling_Aid.setScreen(video);
+					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/big_buck_bunny_1_minute.avi", _mainFrame);
+					_mainFrame.setScreen(video);
 					video.play();
 				} else {
 					// The bonus video is played if the level is the final level
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/bonus_reward.avi", _spelling_Aid);
-					_spelling_Aid.setScreen(video);
+					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/bonus_reward.avi", _mainFrame);
+					_mainFrame.setScreen(video);
 					video.play();
 				}
 
@@ -343,7 +345,7 @@ public class Quiz extends AbstractScreen{
 		JPanel options = new JPanel();
 		options.setBounds(0, 550, 800, 60);
 
-		player = _spelling_Aid.getPlayer();
+		player = _mainFrame.getPlayer();
 		song.addActionListener(new ActionListener() {
 
 			@Override
@@ -351,7 +353,7 @@ public class Quiz extends AbstractScreen{
 				if (song.getText().equals("Music")) {
 					toggleSongText(true);
 					if (player.isPlaying()) {
-						_spelling_Aid.toggleButton(false);
+						_mainFrame.toggleButton(false);
 						player.togglePlayback();
 					}	
 					rewardPlayer = new MusicPlayer(true);
@@ -374,11 +376,12 @@ public class Quiz extends AbstractScreen{
 			}
 		};
 
-		_spelling_Aid.addSoundListener(al);
+		_mainFrame.addSoundListener(al);
 
 		//song.setEnabled(false);
 		//panel.setBackground(new Color(100, 149, 237));
 		options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		options.setOpaque(false);
 
 		options.add(close);
 		options.add(restart);
@@ -415,7 +418,7 @@ public class Quiz extends AbstractScreen{
 				if (isCorrect()) {
 					//previousCorrect.add("Correct");
 
-					/* _spelling_Aid.appendList(currentWord, attempts, true); */
+					/* _mainFrame.appendList(currentWord, attempts, true); */
 				} else {
 					if (getAttempts() == 1) {
 						// If they have one failed attempt, then they are
@@ -464,7 +467,7 @@ public class Quiz extends AbstractScreen{
 		});
 
 		JPanel panel = new JPanel();
-		panel.setBounds(180, 224, 500, 33);
+		panel.setBounds(180, 260, 500, 33);
 		internal.add(panel);
 		input.setBounds(0, 0, 353, 33);
 
@@ -476,7 +479,7 @@ public class Quiz extends AbstractScreen{
 
 		JPanel quizOptions = new JPanel();
 		quizOptions.setBounds(353, -4, 147, 33);
-
+		quizOptions.setOpaque(false);
 		quizOptions.add(submit);
 
 		// Plays the word once more once clicked
@@ -501,10 +504,29 @@ public class Quiz extends AbstractScreen{
 
 		quizOptions.add(repeat);
 		panel.setLayout(null);
+		panel.setOpaque(false);
 		//quizOptions.setBackground(new Color(100, 149, 237));
 
 		panel.add(input);
 		panel.add(quizOptions);
+		playerLabel.setIcon(new ImageIcon("resources/Player.png"));
+		playerLabel.setBounds(10, 10, 160, 40);
+
+		internal.add(playerLabel);
+		playerName.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		playerName.setBounds(180, 10, 380, 40);
+		playerName.setText(_name);
+
+		internal.add(playerName);
+		wordlistLabel.setIcon(new ImageIcon("resources/Wordlist.png"));
+		wordlistLabel.setBounds(10, 60, 200, 40);
+
+		internal.add(wordlistLabel);
+		wordlistName.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		wordlistName.setBounds(220, 60, 400, 40);
+		wordlistName.setText(wordlist.getName());
+
+		internal.add(wordlistName);
 		add(options);
 
 		/*submit.setBackground(new Color(255, 255, 0));
@@ -589,7 +611,7 @@ public class Quiz extends AbstractScreen{
 	}
 
 	public void setSubmitAsDefault() {
-		_spelling_Aid.getRootPane().setDefaultButton(submit);
+		_mainFrame.getRootPane().setDefaultButton(submit);
 	}
 
 	public void toggleSongText(boolean playing) {

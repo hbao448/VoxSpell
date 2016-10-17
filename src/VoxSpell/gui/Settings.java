@@ -25,7 +25,7 @@ import VoxSpell.words.Wordlist;
 
 public class Settings extends AbstractScreen{
 
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 	private JTextField textField;
 	private SettingsData settingsData;
 	private ArrayList<String> _availableVoices = new ArrayList<String>();
@@ -34,20 +34,20 @@ public class Settings extends AbstractScreen{
 	private JComboBox selectVoices;
 	
 
-	public Settings(MainFrame spelling_aid) {
+	public Settings(MainFrame mainFrame) {
 
-		_spelling_Aid = spelling_aid;
-		settingsData = _spelling_Aid.getSettings();
+		_mainFrame = mainFrame;
+		settingsData = _mainFrame.getSettings();
 		
 		setLayout(null);
 		JButton mainMenu = new JButton("Main Menu");
 		//mainMenu.setBackground(new Color(255, 255, 0));
 		mainMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
+				_mainFrame.setScreen(new MainMenu(_mainFrame));
 			}
 		});
-		mainMenu.setBounds(0, 550, 800, 50);
+		mainMenu.setBounds(350, 560, 100, 25);
 		add(mainMenu);
 
 		textField = new JTextField(settingsData.getWordlist().getWordlistFile().getPath());
@@ -104,7 +104,7 @@ public class Settings extends AbstractScreen{
 		JButton btnResetWordlist = new JButton("Reset Wordlist");
 		btnResetWordlist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textField.setText("resources\\Default Wordlist.txt");
+				textField.setText("resources/Default Wordlist.txt");
 				settingsData.setWordlist(new File("resources/Default Wordlist.txt"));
 			}
 		});

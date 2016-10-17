@@ -139,4 +139,8 @@ public class Wordlist {
 	public int getMaxLevel() {
 		return maxLevel;
 	}
+
+	public String getName() {
+		return wordlist.getName();
+	}
 }

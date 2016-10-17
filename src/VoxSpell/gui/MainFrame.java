@@ -76,7 +76,7 @@ public class MainFrame extends JFrame {
 		
 		bgmPlayback.setBounds(740, 10, 50, 50);
 		bgmPlayback.setFocusable(false);
-
+		
 		setScreen(new MainMenu(this));
 		setLocationRelativeTo(null);
 		player = new MusicPlayer(false);

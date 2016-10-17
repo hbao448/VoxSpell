@@ -16,14 +16,14 @@ public class VideoPlayer extends AbstractScreen {
 
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private Quiz _quiz;
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 	private Timer timer;
 	private EmbeddedMediaPlayer video;
 	private String _fileName;
 
-	public VideoPlayer(Quiz quiz, String filename, MainFrame spelling_Aid) {
+	public VideoPlayer(Quiz quiz, String filename, MainFrame mainFrame) {
 
-		_spelling_Aid = spelling_Aid;
+		_mainFrame = mainFrame;
 		_quiz = quiz;
 		_fileName = filename;
 
@@ -72,9 +72,9 @@ public class VideoPlayer extends AbstractScreen {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.stop();
-				_spelling_Aid.setScreen(_quiz);
+				_mainFrame.setScreen(_quiz);
 				_quiz.setSubmitAsDefault();
-				_spelling_Aid.toggleSoundButton(true);
+				_mainFrame.toggleSoundButton(true);
 			}
 
 		});

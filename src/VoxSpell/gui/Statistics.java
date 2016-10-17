@@ -1,16 +1,14 @@
 package VoxSpell.gui;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,28 +20,27 @@ import javax.swing.SwingConstants;
 
 import VoxSpell.words.Wordlist;
 
-import java.awt.Color;
-
 public class Statistics extends AbstractScreen{
 
 	private JButton close = new JButton("Main Menu");
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 	private JTable table;
 	private static DecimalFormat df = new DecimalFormat("#.#");
 	private final static String[] columns = {"Level", "Passed", "Failed", "Average Score", "Total Attempts", "Wordlist"};
 
-	public Statistics(MainFrame spelling_Aid) {
+	public Statistics(MainFrame mainFrame) throws EmptyStatsException {
 		setLayout(null);
 		//close.setBackground(new Color(255, 255, 0));
-		_spelling_Aid = spelling_Aid;
+		_mainFrame = mainFrame;
 		showStats();
 	}
 
 	/**
 	 * This method displays the user's statistics in a JFrame with a JTable storing the data
 	 * It is reused code from A2
+	 * @throws EmptyStatsException 
 	 */
-	public void showStats() {
+	public void showStats() throws EmptyStatsException {
 		calculateStats();
 
 		if (table != null) {
@@ -51,27 +48,30 @@ public class Statistics extends AbstractScreen{
 			setLayout(null);
 			// Adds the JTable to a JScrollPane to allow for scrolling and for headers to show up
 			JScrollPane scroll = new JScrollPane(table);
-			scroll.setBounds(50, 120, 700, 400);
+			scroll.setBounds(50, 120, 700, 420);
 			add(scroll);
+			table.setOpaque(false);
+			scroll.setOpaque(false);
+			scroll.getViewport().setOpaque(false);
+			scroll.setBorder(BorderFactory.createEmptyBorder());
 
 			// Disposes the JFrame and unhides the main menu once the "Main Menu" button is pressed
 			close.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
+					_mainFrame.setScreen(new MainMenu(_mainFrame));
 				}
 
 			});
 
-			table.setOpaque(true);
-			scroll.setOpaque(true);
+	
 			//scroll.getViewport().setBackground(new Color(100, 149, 237));
 			
 			//table.setBackground(new Color(255, 255, 0));
 			//scroll.setBackground(new Color(100, 149, 237));
 			// Finally displays the JFrame containing the statistics
-			close.setBounds(0, 550, 800, 50);
+			close.setBounds(350, 560, 100, 25);
 			add(close);
 			
 			JLabel logo = new JLabel("");
@@ -89,7 +89,7 @@ public class Statistics extends AbstractScreen{
 	/*
 	 * Modified A2 code
 	 */
-	private void calculateStats() {
+	private void calculateStats() throws EmptyStatsException {
 		// Reads the current results
 		ArrayList<String> results = new Wordlist(new File(".results")).readList();
 
@@ -97,7 +97,7 @@ public class Statistics extends AbstractScreen{
 		if (results.size() == 0) {
 			JOptionPane.showMessageDialog(new JFrame(), "Error, no results saved", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			_spelling_Aid.setVisible(true);
+			throw new EmptyStatsException();
 		} else {
 			// Stores the results for every level as a HashMap with a 3 element array representing passed, failed and total score
 			HashMap<String, HashMap<Integer, Integer[]>> stats1 = new HashMap<String, HashMap<Integer, Integer[]>>();
@@ -188,5 +188,9 @@ public class Statistics extends AbstractScreen{
 			table.getColumnModel().getColumn(5).setPreferredWidth(200);
 			table.setEnabled(false);
 		}
+	}
+	
+	class EmptyStatsException extends Exception {
+		
 	}
 }

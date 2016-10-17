@@ -24,14 +24,14 @@ public class Hiscores extends AbstractScreen{
 
 	private JTable table;
 	private JScrollPane scrollPane;
-	private MainFrame _spelling_Aid;
+	private MainFrame _mainFrame;
 
 	/**
 	 * Create the frame.
 	 */
-	public Hiscores(MainFrame spelling_Aid) {
+	public Hiscores(MainFrame mainFrame) {
 		
-		_spelling_Aid = spelling_Aid;
+		_mainFrame = mainFrame;
 		
 		//setBackground(new Color(100, 149, 237));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -42,10 +42,10 @@ public class Hiscores extends AbstractScreen{
 		//mainMenu.setBackground(new Color(255, 255, 0));
 		mainMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_spelling_Aid.setScreen(new MainMenu(_spelling_Aid));
+				_mainFrame.setScreen(new MainMenu(_mainFrame));
 			}
 		});
-		mainMenu.setBounds(0, 550, 800, 50);
+		mainMenu.setBounds(350, 560, 100, 25);
 		add(mainMenu);
 
 		scrollPane = new JScrollPane();
