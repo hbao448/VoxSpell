@@ -15,6 +15,10 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.failed
+.results
+.scores
+.text.scm
 
 # External tool builders
 .externalToolBuilders/
