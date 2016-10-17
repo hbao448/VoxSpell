@@ -6,11 +6,13 @@ import javax.swing.Timer;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class VideoPlayer extends AbstractScreen {
 
@@ -20,6 +22,7 @@ public class VideoPlayer extends AbstractScreen {
 	private Timer timer;
 	private EmbeddedMediaPlayer video;
 	private String _fileName;
+	private JButton pause;
 
 	public VideoPlayer(Quiz quiz, String filename, MainFrame mainFrame) {
 
@@ -42,31 +45,69 @@ public class VideoPlayer extends AbstractScreen {
 		add(panel);
 		panel.setLayout(null);
 
-		JButton pause = new JButton("Pause");
-		pause.setBounds(193, 31, 214, 33);
+		pause = new JButton("");
+		togglePlay(true);
+		pause.setBounds(380, 30, 40, 40);
 		panel.add(pause);
 		pause.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (pause.getText().equals("Pause")) {
+				if (video.isPlaying()) {
 					video.setPause(true);
-					pause.setText("Resume");
+					togglePlay(false);
 				} else {
 					video.setPause(false);
-					pause.setText("Pause");
+					togglePlay(true);
 				}
 			}
-
 		});
 
-		JButton exit = new JButton("Exit");
-		exit.setBounds(417, 31, 239, 33);
+		JButton exit = new JButton("");
+		{
+			ImageIcon icon = new ImageIcon("resources/Stop.png");
+			Image img = icon.getImage();
+			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(resized); 
+			exit.setIcon(icon);
+		}
+		exit.setBounds(470, 35, 30, 30);
 		panel.add(exit);
 
 		JProgressBar progress = new JProgressBar();
 		progress.setBounds(0, 0, 800, 25);
 		panel.add(progress);
+
+		JButton rewind = new JButton("");
+		rewind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				video.skip(-5000);
+			}
+		});
+		rewind.setBounds(340, 35, 30, 30);
+		{
+			ImageIcon icon = new ImageIcon("resources/Back.png");
+			Image img = icon.getImage();
+			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(resized); 
+			rewind.setIcon(icon);
+		}
+		panel.add(rewind);
+
+		JButton ffwd = new JButton("");
+		ffwd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				video.skip(5000);
+			}
+		});
+		ffwd.setBounds(430, 35, 30, 30);
+		{
+			ImageIcon icon = new ImageIcon("resources/Forward.png");
+			Image img = icon.getImage();
+			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(resized); 
+			ffwd.setIcon(icon);
+		}
+		panel.add(ffwd);
 		exit.addActionListener(new ActionListener() {
 
 			@Override
@@ -87,6 +128,9 @@ public class VideoPlayer extends AbstractScreen {
 				if (totalTime != 0) {
 					if (time == totalTime) {
 						pause.setEnabled(false);
+						togglePlay(false);
+						ffwd.setEnabled(false);
+						rewind.setEnabled(false);
 					}
 					progress.setValue((int) ((time*100)/totalTime));
 				}
@@ -98,5 +142,20 @@ public class VideoPlayer extends AbstractScreen {
 	public void play() {
 		video.playMedia(_fileName);
 		timer.start();
+	}
+
+	public void togglePlay(boolean playing) {
+		ImageIcon icon;
+
+		if (playing) {
+			icon = new ImageIcon("resources/Pause.png");
+		} else {
+			icon = new ImageIcon("resources/Play.png");
+		}
+
+		Image img = icon.getImage();
+		Image resized = img.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+		icon = new ImageIcon(resized); 
+		pause.setIcon(icon);
 	}
 }
