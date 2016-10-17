@@ -49,6 +49,7 @@ public class Quiz extends AbstractScreen{
 	protected JButton repeat = new JButton("Repeat");
 	protected boolean repeated;
 	private int score;
+	private int highscore;
 	private int multiplier = 1;
 	private QuizInternal internal;
 	private int _level;
@@ -403,6 +404,8 @@ public class Quiz extends AbstractScreen{
 		internal.setBounds(0,0, 800, 550);
 		setLayout(null);
 		add(internal);
+		highscore = scorer.getHighscore(_name, wordlist.getName());
+		internal.setHighscore(highscore);
 
 		submit.addActionListener(new ActionListener() {
 
@@ -576,6 +579,10 @@ public class Quiz extends AbstractScreen{
 		internal.setMultiplier(multiplier);
 		internal.setScore(score);
 		internal.setRepeats(getRepeats());
+		if (score > highscore) {
+			internal.setHighscore(score);
+			internal.showHighscore();
+		}
 	}
 
 	public int getRepeats() {

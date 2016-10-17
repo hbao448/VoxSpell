@@ -173,4 +173,23 @@ public class ScoreKeeper {
 
 	}
 	
+	public int getHighscore(String player, String wordlist) {
+		
+		int highscore = 0;
+		
+		ArrayList<String> results = new Wordlist(new File(".scores")).readList();
+		
+		for (String result : results) {
+			String[] split = result.split("\t");
+			if (split[0].equals(player) && split[3].equals(wordlist)) {
+				int score = Integer.parseInt(split[2]);
+				if (score > highscore) {
+					highscore = score;
+				}
+			}
+		}
+
+		return highscore;
+	}
+	
 }

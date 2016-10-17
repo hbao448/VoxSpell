@@ -53,13 +53,14 @@ public class Settings extends AbstractScreen{
 		textField = new JTextField(settingsData.getWordlist().getWordlistFile().getPath());
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField.setEditable(false);
-		textField.setBounds(188, 206, 350, 40);
+		textField.setBounds(220, 206, 350, 40);
 		add(textField);
 		textField.setColumns(10);
 
 		JLabel wordlistLabel = new JLabel("Wordlist :");
+		wordlistLabel.setIcon(new ImageIcon("resources/Wordlist.png"));
 		wordlistLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		wordlistLabel.setBounds(75, 194, 133, 64);
+		wordlistLabel.setBounds(10, 206, 200, 40);
 		add(wordlistLabel);
 
 		JButton btnNewButton = new JButton("Change Wordlist");
@@ -98,7 +99,7 @@ public class Settings extends AbstractScreen{
 				}
 			}
 		});
-		btnNewButton.setBounds(573, 192, 180, 33);
+		btnNewButton.setBounds(590, 192, 180, 33);
 		add(btnNewButton);
 
 		JButton btnResetWordlist = new JButton("Reset Wordlist");
@@ -108,7 +109,7 @@ public class Settings extends AbstractScreen{
 				settingsData.setWordlist(new File("resources/Default Wordlist.txt"));
 			}
 		});
-		btnResetWordlist.setBounds(573, 225, 180, 33);
+		btnResetWordlist.setBounds(590, 225, 180, 33);
 		add(btnResetWordlist);
 		
 		_availableVoices.add("American Voice");
@@ -120,8 +121,8 @@ public class Settings extends AbstractScreen{
 		_voiceNames.add("akl_nz_jdt_diphone");
 		
 		selectVoices = new JComboBox(_availableVoices.toArray());
-		selectVoices.setLocation(188, 308);
-		selectVoices.setSize(300, 60);
+		selectVoices.setLocation(280, 340);
+		selectVoices.setSize(300, 40);
 
 		// Adds an ActionListener to the JComboBox to save the selected voice into the _selectedVoice field
 		selectVoices.addActionListener(new ActionListener() {
@@ -136,9 +137,10 @@ public class Settings extends AbstractScreen{
 		
 		add(selectVoices);
 		
-		JLabel lblVoice = new JLabel("Voice :");
+		JLabel lblVoice = new JLabel("");
+		lblVoice.setIcon(new ImageIcon("resources/Voice.png"));
 		lblVoice.setHorizontalAlignment(SwingConstants.CENTER);
-		lblVoice.setBounds(75, 308, 133, 64);
+		lblVoice.setBounds(10, 340, 120, 40);
 		add(lblVoice);
 		
 		for (double speed = 0.5; speed <= 2.0; speed += 0.25) {
@@ -154,12 +156,13 @@ public class Settings extends AbstractScreen{
 			}
 		});
 		comboBox.setSelectedIndex(_speeds.indexOf(settingsData.getFestival().getSpeed()));
-		comboBox.setBounds(188, 398, 300, 60);
+		comboBox.setBounds(280, 440, 300, 40);
 		add(comboBox);
 		
-		JLabel lblVoiceSpeed = new JLabel("Voice Speed :");
+		JLabel lblVoiceSpeed = new JLabel("");
+		lblVoiceSpeed.setIcon(new ImageIcon("resources/Voice Speed.png"));
 		lblVoiceSpeed.setHorizontalAlignment(SwingConstants.CENTER);
-		lblVoiceSpeed.setBounds(75, 398, 133, 64);
+		lblVoiceSpeed.setBounds(10, 440, 260, 40);
 		add(lblVoiceSpeed);
 		
 		JLabel logo = new JLabel("");
@@ -178,7 +181,7 @@ public class Settings extends AbstractScreen{
 			}
 		});
 		testVoice.setMultiClickThreshhold(1000);
-		testVoice.setBounds(573, 343, 162, 76);
+		testVoice.setBounds(590, 375, 162, 70);
 		add(testVoice);
 		
 	}

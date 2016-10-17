@@ -30,9 +30,9 @@ public class Hiscores extends AbstractScreen{
 	 * Create the frame.
 	 */
 	public Hiscores(MainFrame mainFrame) {
-		
+
 		_mainFrame = mainFrame;
-		
+
 		//setBackground(new Color(100, 149, 237));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
@@ -107,7 +107,7 @@ public class Hiscores extends AbstractScreen{
 	}
 
 	public void viewScores() {
-		
+
 		ArrayList<String> results = new Wordlist(new File("resources/Default Scores.txt")).readList();
 		ArrayList<String> extraResults = new Wordlist(new File(".scores")).readList();
 		ArrayList<Integer> resultScores = new ArrayList<Integer>();
@@ -166,7 +166,7 @@ public class Hiscores extends AbstractScreen{
 						"Score", "Highest Level", "Player", "Wordlist"
 				}
 				));
-		
+
 		table.getColumnModel().getColumn(1).setPreferredWidth(105);
 		table.getColumnModel().getColumn(3).setPreferredWidth(128);
 		table.getTableHeader().setReorderingAllowed(false);

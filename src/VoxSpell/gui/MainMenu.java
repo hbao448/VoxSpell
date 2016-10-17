@@ -25,7 +25,7 @@ public class MainMenu extends AbstractScreen {
 	private JButton quiz = new JButton("New Spelling Quiz");
 	private JButton hiscores = new JButton("View Hiscores");
 	private JButton statistics = new JButton("View Statistics");
-	private JButton clear = new JButton("Clear Statistics");
+	private JButton clear = new JButton("Clear Results");
 	private MainFrame _mainFrame;
 	private JButton exit = new JButton("Exit");
 	private JButton settings = new JButton("Settings");
@@ -171,7 +171,7 @@ public class MainMenu extends AbstractScreen {
 				// Prompts the user if they are sure that they want to clear
 				// their statistics
 				int choice = JOptionPane.showConfirmDialog(null, "Are you sure you wish to clear all statistics?",
-						"Clear statistics", JOptionPane.YES_NO_OPTION);
+						"Clear Results", JOptionPane.YES_NO_OPTION);
 
 				if (choice == JOptionPane.YES_OPTION) {
 					// If they choose yes then their statistics are cleared and

@@ -23,7 +23,9 @@ public class QuizInternal extends JPanel {
 	private JLabel wordLabel;
 	private JLabel levelNumberLabel;
 	private JLabel wordNumberLabel;
+	private JLabel newHighscoreLabel;
 	private JLabel highscoreLabel;
+	private JLabel highscoreNumberLabel;
 
 	/**
 	 * Create the panel.
@@ -68,7 +70,7 @@ public class QuizInternal extends JPanel {
 		scoreNumberLabel = new JLabel("100");
 		scoreNumberLabel.setForeground(Color.BLACK);
 		scoreNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
-		scoreNumberLabel.setBounds(160, 450, 150, 40);
+		scoreNumberLabel.setBounds(230, 450, 150, 40);
 		add(scoreNumberLabel);
 		
 		levelLabel = new JLabel("");
@@ -95,11 +97,25 @@ public class QuizInternal extends JPanel {
 		wordNumberLabel.setBounds(500, 110, 144, 40);
 		add(wordNumberLabel);
 		
+		newHighscoreLabel = new JLabel("");
+		newHighscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		newHighscoreLabel.setIcon(new ImageIcon("resources/New Highscore.png"));
+		newHighscoreLabel.setBounds(390, 450, 350, 40);
+		add(newHighscoreLabel);
+		newHighscoreLabel.setVisible(false);
+		
 		highscoreLabel = new JLabel("");
-		highscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		highscoreLabel.setIcon(new ImageIcon("resources/Highscore.png"));
-		highscoreLabel.setBounds(320, 450, 350, 40);
+		highscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		highscoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		highscoreLabel.setBounds(10, 500, 220, 40);
 		add(highscoreLabel);
+		
+		highscoreNumberLabel = new JLabel("100");
+		highscoreNumberLabel.setForeground(Color.BLACK);
+		highscoreNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
+		highscoreNumberLabel.setBounds(230, 500, 150, 40);
+		add(highscoreNumberLabel);
 
 	}
 	
@@ -122,5 +138,13 @@ public class QuizInternal extends JPanel {
 	public void setRepeats(int repeats) {
 		progressBar.setValue(repeats*10);
 		progressBar.setString(repeats+"");
+	}
+	
+	public void showHighscore() {
+		newHighscoreLabel.setVisible(true);
+	}
+	
+	public void setHighscore(int score) {
+		highscoreNumberLabel.setText(score+"");
 	}
 }
