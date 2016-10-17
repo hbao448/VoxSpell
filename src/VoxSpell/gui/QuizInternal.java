@@ -72,7 +72,7 @@ public class QuizInternal extends JPanel {
 		scoreNumberLabel = new JLabel("100");
 		scoreNumberLabel.setForeground(Color.BLACK);
 		scoreNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
-		scoreNumberLabel.setBounds(230, 450, 150, 40);
+		scoreNumberLabel.setBounds(260, 451, 150, 40);
 		add(scoreNumberLabel);
 
 		levelLabel = new JLabel("");
@@ -102,7 +102,7 @@ public class QuizInternal extends JPanel {
 		newHighscoreLabel = new JLabel("");
 		newHighscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		newHighscoreLabel.setIcon(new ImageIcon("resources/New Highscore.png"));
-		newHighscoreLabel.setBounds(390, 450, 350, 40);
+		newHighscoreLabel.setBounds(420, 451, 350, 40);
 		add(newHighscoreLabel);
 		newHighscoreLabel.setVisible(false);
 
@@ -116,11 +116,11 @@ public class QuizInternal extends JPanel {
 		highscoreNumberLabel = new JLabel("100");
 		highscoreNumberLabel.setForeground(Color.BLACK);
 		highscoreNumberLabel.setFont(new Font("Dialog", Font.PLAIN, 30));
-		highscoreNumberLabel.setBounds(230, 500, 150, 40);
+		highscoreNumberLabel.setBounds(260, 501, 150, 40);
 		add(highscoreNumberLabel);
 
 		hintLabel = new JLabel("");
-		hintLabel.setIcon(new ImageIcon("D:\\School\\SOFTENG206\\VoxSpell\\VoxSpell\\resources\\Hint.png"));
+		hintLabel.setIcon(new ImageIcon("resources/Hint.png"));
 		hintLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		hintLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		hintLabel.setBounds(120, 330, 140, 40);

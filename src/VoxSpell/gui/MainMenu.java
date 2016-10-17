@@ -84,7 +84,8 @@ public class MainMenu extends AbstractScreen {
 			}
 
 		});
-
+		_mainFrame.getRootPane().setDefaultButton(quiz);
+		
 		statistics.setToolTipText("View the pass rates for each level");
 		//statistics.setBackground(new Color(255, 255, 0));
 		statistics.setBounds(275, 240, 250, 50);

@@ -355,6 +355,7 @@ public class Quiz extends AbstractScreen{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				input.requestFocus();
 				if (song.getText().equals("Music")) {
 					toggleSongText(true);
 					if (player.isPlaying()) {
@@ -474,7 +475,7 @@ public class Quiz extends AbstractScreen{
 		});
 
 		JPanel panel = new JPanel();
-		panel.setBounds(130, 260, 560, 33);
+		panel.setBounds(130, 260, 600, 33);
 		internal.add(panel);
 		input.setBounds(0, 0, 353, 33);
 
@@ -485,7 +486,7 @@ public class Quiz extends AbstractScreen{
 		submit.setEnabled(false);
 
 		JPanel quizOptions = new JPanel();
-		quizOptions.setBounds(353, -4, 210, 33);
+		quizOptions.setBounds(353, -4, 271, 33);
 		quizOptions.setOpaque(false);
 		quizOptions.add(submit);
 
