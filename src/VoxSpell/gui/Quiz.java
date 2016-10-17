@@ -384,7 +384,7 @@ public class Quiz extends AbstractScreen{
 
 		_mainFrame.addSoundListener(al);
 
-		//song.setEnabled(false);
+		song.setEnabled(false);
 		//panel.setBackground(new Color(100, 149, 237));
 		options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		options.setOpaque(false);
@@ -402,7 +402,7 @@ public class Quiz extends AbstractScreen{
 		options.add(song);
 
 		nextLevel.setEnabled(false);
-		//videoReward.setEnabled(false);
+		videoReward.setEnabled(false);
 		restart.setEnabled(false);
 
 		internal = new QuizInternal();
