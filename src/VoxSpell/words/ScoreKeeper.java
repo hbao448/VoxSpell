@@ -103,7 +103,7 @@ public class ScoreKeeper {
 			}
 			
 			// Writes the level and score to the results file
-			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getName() + "\t" + passed);
+			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getName() + "\t" + passed + "\t" + ((double)score*100)/size);
 			bw.newLine();
 
 		} catch (IOException e) {
