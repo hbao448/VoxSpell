@@ -22,7 +22,9 @@ import VoxSpell.festival.Bash;
 import VoxSpell.festival.Festival;
 import VoxSpell.media.MusicPlayer;
 import VoxSpell.media.SoundBuzzer;
+import VoxSpell.words.Level;
 import VoxSpell.words.ScoreKeeper;
+import VoxSpell.words.Word;
 import VoxSpell.words.Wordlist;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -37,10 +39,8 @@ public class Quiz extends AbstractScreen{
 	private JButton close = new JButton("Main menu");
 	private JButton nextLevel = new JButton("Next level");
 	private JButton videoReward = new JButton("Video");
-	private String currentWord = "";
-	private int attempts;
-	private ArrayList<String> words = new ArrayList<String>();
-	private ArrayList<String> previousWords;
+	private Word currentWord;
+	private Level words;
 	private ArrayList<String> incorrectWords = new ArrayList<String>();
 	private int size;
 	private int testNum;
@@ -53,7 +53,6 @@ public class Quiz extends AbstractScreen{
 	private int multiplier = 1;
 	private QuizInternal internal;
 	private int _level;
-	private boolean correct;
 	private int repeats = 10;
 	private MusicPlayer player;
 	private MusicPlayer rewardPlayer;
@@ -79,6 +78,7 @@ public class Quiz extends AbstractScreen{
 		_festival.setQuiz(this);
 		scorer = new ScoreKeeper(_mainFrame.getSettings());
 		wordlist = _mainFrame.getSettings().getWordlist();
+		words = wordlist.getLevel(_level);
 		setUp();
 
 	}
@@ -96,27 +96,13 @@ public class Quiz extends AbstractScreen{
 
 		Bash.bashCommand("rm -f .text.scm");
 
-		words = _mainFrame.getSettings().getWordlist().readLevel(_level);
-
-
-		// Displays an error message if the file is empty
-		if (words.isEmpty()) {
-
-			JOptionPane.showMessageDialog(new JFrame(), "Error, no words in level " + _level, "Error",
-					JOptionPane.ERROR_MESSAGE);
-			_mainFrame.setScreen(new MainMenu(_mainFrame));
-
-
-		} 
-
 		// Determines the number of words to be quizzed, which is either
 		// 10 or the number of words in the list, if the list has less than 10
 		// words
 		size = words.size() < 10 ? words.size() : 10;
-		previousWords = new ArrayList<String>();
 
+		words.reset();
 		numberCorrect = 0;
-		testNum = 0;
 		testNum = 1;
 		test();
 
@@ -137,27 +123,13 @@ public class Quiz extends AbstractScreen{
 			hint.setEnabled(true);
 			internal.disableHint();
 			updateInternals();
-			setCorrect(false);
-			setAttempts(0);
 			repeated = false;
 
-			Random rand = new Random();
-			int wordNumber = (Math.abs(rand.nextInt()) % words.size());
-
-			currentWord = words.get(wordNumber);
-
-			while (previousWords.contains(currentWord)) {
-				wordNumber = (Math.abs(rand.nextInt()) % words.size());
-				currentWord = words.get(wordNumber);
-			}
-			// Adds the current word to the list of quizzed words, so that it
-			// cannot
-			// be selected again
-			previousWords.add(currentWord);
+			currentWord = words.nextWord();
 
 			// Speaks the word selected
 			previousCorrect.add("Please spell, ");
-			previousCorrect.add(currentWord);
+			previousCorrect.add(currentWord.getWord());
 			_festival.textToSpeech(previousCorrect);
 			previousCorrect.clear();
 			input.requestFocus();
@@ -337,6 +309,7 @@ public class Quiz extends AbstractScreen{
 
 				incorrectWords.clear();
 				_level++;
+				words = wordlist.getLevel(_level);
 
 				if (getRepeats() < 5) {
 					setRepeats(getRepeats() + 5);
@@ -419,23 +392,23 @@ public class Quiz extends AbstractScreen{
 				input.requestFocus();
 				submit.setEnabled(false);
 				repeat.setEnabled(false);
+				spellcheck(input.getText());
 				// Checks that the user's input in the JTextField is spelled
 				// correctly
-				setCorrect(spellcheck(input.getText().toLowerCase()));
-
-				if (isCorrect()) {
+				
+				if (currentWord.isCorrect()) {
 					//previousCorrect.add("Correct");
 
 					/* _mainFrame.appendList(currentWord, attempts, true); */
 				} else {
-					if (getAttempts() == 1) {
+					if (currentWord.getAttempts() == 1) {
 						// If they have one failed attempt, then they are
 						// allowed to spell the word again
 						ArrayList<String> text = new ArrayList<String>();
 						text.add("Incorrect, please try again");
 
-						text.add(currentWord);
-						text.add(currentWord);
+						text.add(currentWord.getWord());
+						text.add(currentWord.getWord());
 						_festival.textToSpeech(text);
 
 					} else {
@@ -444,15 +417,15 @@ public class Quiz extends AbstractScreen{
 						//previousCorrect.add("Incorrect");
 
 
-						scorer.appendFailed(currentWord, _level);
+						scorer.appendFailed(currentWord.getWord(), _level);
 
 					}
 				}
 
 				// If the user correctly spells a word, it is removed from their
 				// failed list
-				if (isCorrect()) {
-					scorer.removeWord(currentWord + "\t" + _level);
+				if (currentWord.isCorrect()) {
+					scorer.removeWord(currentWord.getWord() + "\t" + _level);
 					numberCorrect++;
 				}
 
@@ -462,10 +435,10 @@ public class Quiz extends AbstractScreen{
 				// Goes to the next word once the user gets the current word
 				// correct
 				// or fails twice
-				if (isCorrect() || getAttempts() == 2) {
+				if (currentWord.isCorrect() || currentWord.getAttempts() == 2) {
 					testNum++;
-					if (!isCorrect()) {
-						incorrectWords.add(currentWord);
+					if (!currentWord.isCorrect()) {
+						incorrectWords.add(currentWord.getWord());
 					}
 					test();
 				}
@@ -501,7 +474,7 @@ public class Quiz extends AbstractScreen{
 				repeat.setEnabled(false);
 				submit.setEnabled(false);
 				ArrayList<String> text = new ArrayList<String>();
-				text.add(currentWord);
+				text.add(currentWord.getWord());
 				_festival.textToSpeech(text);
 				input.requestFocus();
 			}
@@ -520,7 +493,7 @@ public class Quiz extends AbstractScreen{
 				hint.setEnabled(false);
 				multiplier = 1;
 				updateInternals();
-				internal.showHint(currentWord);
+				internal.showHint(currentWord.getWord());
 			}
 			
 		});
@@ -552,18 +525,6 @@ public class Quiz extends AbstractScreen{
 
 		internal.add(wordlistName);
 		add(options);
-
-		/*submit.setBackground(new Color(255, 255, 0));
-		repeat.setBackground(new Color(255, 255, 0));
-		close.setBackground(new Color(255, 255, 0));
-		restart.setBackground(new Color(255, 255, 0));
-		nextLevel.setBackground(new Color(255, 255, 0));
-		videoReward.setBackground(new Color(255, 255, 0));
-		song.setBackground(new Color(255, 255, 0));*/
-
-		// Sets the submit button as the default one so that the enter button can be used to submit
-		//JRootPane rootPane = SwingUtilities.getRootPane(submit); 
-
 	}
 
 	/**
@@ -576,10 +537,9 @@ public class Quiz extends AbstractScreen{
 	 * @param text The user's attempt at the current word
 	 * @return
 	 */
-	protected boolean spellcheck(String text) {
-		setAttempts(getAttempts() + 1);
+		private void spellcheck(String text) {
 
-		boolean spelled = text.toLowerCase().equals(currentWord.toLowerCase());
+		boolean spelled = currentWord.spellcheck(text);
 
 		if (spelled) {
 			buzzer.playCorrect();
@@ -591,7 +551,6 @@ public class Quiz extends AbstractScreen{
 			updateInternals();
 		}
 
-		return text.toLowerCase().equals(currentWord.toLowerCase());
 	}
 
 	private void updateInternals() {
@@ -613,23 +572,7 @@ public class Quiz extends AbstractScreen{
 	public void setRepeats(int repeats) {
 		this.repeats = repeats;
 	}
-
-	public boolean isCorrect() {
-		return correct;
-	}
-
-	public void setCorrect(boolean correct) {
-		this.correct = correct;
-	}
-
-	public int getAttempts() {
-		return attempts;
-	}
-
-	public void setAttempts(int attempts) {
-		this.attempts = attempts;
-	}
-
+	
 	public void toggleSubmit(boolean enabled) {
 		submit.setEnabled(enabled);
 	}
@@ -649,5 +592,9 @@ public class Quiz extends AbstractScreen{
 			song.setText("Music");
 			song.setEnabled(false);
 		}
+	}
+
+	public Word getWord() {
+		return currentWord;
 	}
 }

@@ -10,6 +10,7 @@ public class Wordlist {
 
 	private int maxLevel;
 	private File wordlist;
+	private ArrayList<Level> wordLevels = new ArrayList<Level>();
 	
 	public Wordlist(File wordlist) {
 		this.wordlist = wordlist;
@@ -56,10 +57,11 @@ public class Wordlist {
 	 * @param file The wordlist containing all the levels and words
 	 * @param level The level from which words are to be found
 	 * @return An ArrayList containing all the words in a level
+	 * @throws WordlistFormatException 
 	 */
-	public ArrayList<String> readLevel(int level) {
+	private Level readLevel(int level) throws WordlistFormatException {
 
-		ArrayList<String> results = new ArrayList<String>();
+		ArrayList<Word> results = new ArrayList<Word>();
 
 		int next = level + 1;
 
@@ -84,7 +86,7 @@ public class Wordlist {
 				if (line.equals(nextLevel)) {
 					break;
 				}
-				results.add(line);
+				results.add(new Word(line));
 				line = br.readLine();
 			}
 
@@ -95,7 +97,11 @@ public class Wordlist {
 
 		}
 
-		return results;
+		if (results.isEmpty()) {
+			throw new WordlistFormatException("Level " + level + " in " + getName() + " is empty.");
+		}
+		
+		return new Level(results);
 
 	}
 	
@@ -107,9 +113,15 @@ public class Wordlist {
 	 * 
 	 * @param wordlist The wordlist to scan the levels from
 	 * @return An ArrayList of levels inside the wordlist
+	 * @throws WordlistFormatException 
 	 * @throws Exception 
 	 */
-	public ArrayList<String> scanLevels() throws Exception{
+	public ArrayList<String> scanLevels() throws WordlistFormatException{
+		
+		if (wordlist.length() > 10000000) {
+			throw new WordlistFormatException("The wordlist must be smaller than 10MB, please select another file");
+		}
+		
 		maxLevel = 0;
 		ArrayList<String> all = readList();
 		ArrayList<String> levels = new ArrayList<String>();
@@ -119,28 +131,36 @@ public class Wordlist {
 			if(content.startsWith("%Level")){
 				int level = Integer.parseInt(content.split(" ")[1]);
 				if (level != previousLevel + 1) {
-					throw new Exception();
+					throw new WordlistFormatException("The input wordlist must the levels stored in ascending order, starting from level 1");
 				}
 				levels.add("Level " + level);
+				wordLevels.add(readLevel(level));
 				previousLevel = level;
 				if (level > maxLevel) {
 					maxLevel = Integer.parseInt(content.split(" ")[1]);
 				}
 			}
+		}	
+		if (levels.isEmpty()) {
+			throw new WordlistFormatException("The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level");
 		}
 
 		return levels;
 	}
 
-	public File getWordlistFile() {
-		return wordlist;
-	}
-	
 	public int getMaxLevel() {
 		return maxLevel;
 	}
 
 	public String getName() {
 		return wordlist.getName();
+	}
+	
+	public Level getLevel(int i) {
+		return wordLevels.get(i-1);
+	}
+
+	public String getPath() {
+		return wordlist.getPath();
 	}
 }

@@ -25,7 +25,7 @@ public class ScoreKeeper {
 			bw = new BufferedWriter(new FileWriter(".scores", true));
 
 			// Writes the level and score to the results file
-			bw.write(name + "\t" + _level2 + "\t" + score + "\t" + settings.getWordlist().getWordlistFile().getName());
+			bw.write(name + "\t" + _level2 + "\t" + score + "\t" + settings.getWordlist().getName());
 			bw.newLine();
 
 		} catch (IOException e) {
@@ -103,7 +103,7 @@ public class ScoreKeeper {
 			}
 			
 			// Writes the level and score to the results file
-			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getWordlistFile().getName() + "\t" + passed);
+			bw.write("Level" + level + "\t" + score + "\t" + settings.getWordlist().getName() + "\t" + passed);
 			bw.newLine();
 
 		} catch (IOException e) {

@@ -32,7 +32,7 @@ public class Speaker extends SwingWorker<Void, Void> {
 				_quiz.toggleRepeat(true);
 			}
 
-			if (_quiz.getAttempts() == 2 || _quiz.isCorrect()) {
+			if (_quiz.getWord().getAttempts() == 2 || _quiz.getWord().isCorrect()) {
 				_quiz.toggleSubmit(false);
 				_quiz.toggleRepeat(false);
 			} else {

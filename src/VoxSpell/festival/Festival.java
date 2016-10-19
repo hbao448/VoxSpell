@@ -62,7 +62,7 @@ public class Festival {
 	 * @param texts The list of strings to be spoken in order
 	 */
 	public void textToSpeech(ArrayList<String> texts) {
-
+		
 		BufferedWriter bw = null;
 
 		try {
