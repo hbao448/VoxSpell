@@ -14,7 +14,7 @@ public abstract class AbstractScreen extends JPanel{
 	
 	public AbstractScreen() {
 		super();
-		this.bg = new ImageIcon("resources/background.jpg").getImage();
+		this.bg = new ImageIcon("resources/Background.jpg").getImage();
 		
 	}
 	
