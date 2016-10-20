@@ -11,6 +11,17 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundBuzzer {
 	
+	private Clip clip;
+	
+	public SoundBuzzer() {
+		try {
+			clip = AudioSystem.getClip();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void playCorrect() {
 		playClip("resources/correct.wav");
 	}
@@ -23,8 +34,7 @@ public class SoundBuzzer {
 		
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
-			Clip clip;
-			clip = AudioSystem.getClip();
+			clip.close();
 			clip.open(audioInputStream);
 			clip.start();
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
