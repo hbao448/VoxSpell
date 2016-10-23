@@ -38,6 +38,7 @@ public class Speaker extends SwingWorker<Void, Void> {
 			} else {
 				_quiz.toggleSubmit(true);
 			}
+			_quiz.enableMenu();
 		}
 	}
 

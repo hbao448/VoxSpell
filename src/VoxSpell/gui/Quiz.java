@@ -277,7 +277,7 @@ public class Quiz extends AbstractBackgroundScreen{
 					toggleSongText(false);
 				}
 
-				VideoPlayer video = new VideoPlayer(Quiz.this, "resources/GeneratedVideos/Reward" + _level + ".avi", _mainFrame);
+				VideoPlayer video = new VideoPlayer(Quiz.this, "resources/Videos/Reward" + _level + ".avi", _mainFrame);
 				_mainFrame.setScreen(video);
 				video.play();
 
@@ -369,6 +369,7 @@ public class Quiz extends AbstractBackgroundScreen{
 		nextLevel.setEnabled(false);
 		videoReward.setEnabled(false);
 		restart.setEnabled(false);
+		close.setEnabled(false);
 
 		internal = new QuizInternal();
 		internal.setBounds(0,0, 800, 550);
@@ -382,6 +383,7 @@ public class Quiz extends AbstractBackgroundScreen{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				input.requestFocus();
+				close.setEnabled(false);
 				submit.setEnabled(false);
 				repeat.setEnabled(false);
 				spellcheck(input.getText());
@@ -463,6 +465,7 @@ public class Quiz extends AbstractBackgroundScreen{
 				setRepeats(getRepeats() - 1);
 				updateInternals();
 				repeated = true;
+				close.setEnabled(false);
 				repeat.setEnabled(false);
 				submit.setEnabled(false);
 				ArrayList<String> text = new ArrayList<String>();
@@ -588,5 +591,9 @@ public class Quiz extends AbstractBackgroundScreen{
 
 	public Word getWord() {
 		return currentWord;
+	}
+
+	public void enableMenu() {
+		close.setEnabled(true);
 	}
 }

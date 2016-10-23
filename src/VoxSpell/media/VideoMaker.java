@@ -21,7 +21,7 @@ public class VideoMaker extends SwingWorker<Void,Void>{
 		command += name;
 		command += "': fontcolor=white: fontsize=24: x=(w-text_w)/2: y=10, drawtext=fontfile='resources/Fonts/njnaruto.ttf': text='You passed level ";
 		command += level+"";
-		command += " good work': fontcolor=black: fontsize=24: x=(w-text_w)/2: y=(h-30)\" -codec:a copy \"resources/GeneratedVideos/";
+		command += " good work': fontcolor=black: fontsize=24: x=(w-text_w)/2: y=(h-30)\" -codec:a copy \"resources/Videos/";
 		command += "Reward" + level + ".avi\"";
 		
 		Bash.bashCommand(command);

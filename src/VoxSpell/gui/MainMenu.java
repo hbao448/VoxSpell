@@ -223,6 +223,6 @@ public class MainMenu extends AbstractBackgroundScreen {
 		options.add(exit);
 		options.add(settings);
 		
-		Bash.bashCommand("rm -f resources/GeneratedVideos/Reward*");
+		Bash.bashCommand("rm -f resources/Videos/Reward*");
 	}
 }
