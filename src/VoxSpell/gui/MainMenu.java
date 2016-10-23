@@ -18,6 +18,7 @@ import VoxSpell.words.Wordlist;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Image;
 
 @SuppressWarnings("serial")
 public class MainMenu extends AbstractBackgroundScreen {
@@ -28,7 +29,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 	private JButton clear = new JButton("Clear Results");
 	private MainFrame _mainFrame;
 	private JButton exit = new JButton("Exit");
-	private JButton settings = new JButton("Settings");
+	private JButton settings = new JButton("");
 	private final JLabel logo = new JLabel();
 	private final JPanel options = new JPanel();
 	private JComboBox levelSelect;
@@ -195,7 +196,12 @@ public class MainMenu extends AbstractBackgroundScreen {
 			}
 
 		});
-		settings.setBounds(200, 25, 100, 50);
+		ImageIcon settingsIcon = new ImageIcon("resources/Settings Icon.png");
+		Image img = settingsIcon.getImage();
+		Image resized = img.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+		settingsIcon = new ImageIcon(resized);
+		settings.setIcon(settingsIcon);
+		settings.setBounds(250, 25, 50, 50);
 
 		settings.setToolTipText("Change voice and speaker speed");
 		//settings.setBackground(new Color(255, 255, 0));
