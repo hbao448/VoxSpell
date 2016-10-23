@@ -59,7 +59,7 @@ public class Settings extends AbstractBackgroundScreen{
 		textField.setColumns(10);
 
 		JLabel wordlistLabel = new JLabel("Wordlist :");
-		wordlistLabel.setIcon(new ImageIcon("resources/Wordlist.png"));
+		wordlistLabel.setIcon(new ImageIcon("resources/Icons/Wordlist.png"));
 		wordlistLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		wordlistLabel.setBounds(10, 206, 200, 40);
 		add(wordlistLabel);
@@ -100,8 +100,8 @@ public class Settings extends AbstractBackgroundScreen{
 		JButton btnResetWordlist = new JButton("Reset Wordlist");
 		btnResetWordlist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textField.setText("resources/Default Wordlist.txt");
-				settingsData.setWordlist(new File("resources/Default Wordlist.txt"));
+				textField.setText("resources/Data/Default Wordlist.txt");
+				settingsData.setWordlist(new File("resources/Data/Default Wordlist.txt"));
 			}
 		});
 		btnResetWordlist.setBounds(590, 225, 180, 33);
@@ -133,7 +133,7 @@ public class Settings extends AbstractBackgroundScreen{
 		add(selectVoices);
 
 		JLabel lblVoice = new JLabel("");
-		lblVoice.setIcon(new ImageIcon("resources/Voice.png"));
+		lblVoice.setIcon(new ImageIcon("resources/Icons/Voice.png"));
 		lblVoice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVoice.setBounds(10, 340, 120, 40);
 		add(lblVoice);
@@ -155,7 +155,7 @@ public class Settings extends AbstractBackgroundScreen{
 		add(comboBox);
 
 		JLabel lblVoiceSpeed = new JLabel("");
-		lblVoiceSpeed.setIcon(new ImageIcon("resources/Voice Speed.png"));
+		lblVoiceSpeed.setIcon(new ImageIcon("resources/Icons/Voice Speed.png"));
 		lblVoiceSpeed.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVoiceSpeed.setBounds(10, 440, 260, 40);
 		add(lblVoiceSpeed);
@@ -164,7 +164,7 @@ public class Settings extends AbstractBackgroundScreen{
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		logo.setBounds(0, 0, 800, 150);
 
-		ImageIcon image = new ImageIcon("resources/Settings.png");
+		ImageIcon image = new ImageIcon("resources/Icons/Settings.png");
 
 		logo.setIcon(image);
 		add(logo);

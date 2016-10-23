@@ -11,7 +11,7 @@ public class SettingsData {
 	private Wordlist wordlist;
 	
 	public SettingsData() {
-		wordlist = new Wordlist(new File("resources/Default Wordlist.txt"));
+		wordlist = new Wordlist(new File("resources/Data/Default Wordlist.txt"));
 		festival = new Festival();
 	}
 	

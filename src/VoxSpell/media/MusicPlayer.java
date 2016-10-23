@@ -29,7 +29,7 @@ public class MusicPlayer{
 	
 	private void playSong() {
 
-		String soundName = "resources/bgm.wav";
+		String soundName = "resources/Sounds/BGM.wav";
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			clip = AudioSystem.getClip();
@@ -58,7 +58,7 @@ public class MusicPlayer{
 	
 	private void playReward() {
 		
-		String soundName = "resources/music reward.wav";
+		String soundName = "resources/Sounds/Music Reward.wav";
 		try {
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			clip = AudioSystem.getClip();

@@ -23,11 +23,11 @@ public class SoundBuzzer {
 	}
 	
 	public void playCorrect() {
-		playClip("resources/correct.wav");
+		playClip("resources/Sounds/Correct.wav");
 	}
 	
 	public void playIncorrect() {
-		playClip("resources/incorrect.wav");
+		playClip("resources/Sounds/Incorrect.wav");
 	}
 	
 	private void playClip(String file) {

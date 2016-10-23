@@ -104,9 +104,9 @@ public class MainFrame extends JFrame {
 		ImageIcon icon;
 
 		if (playing) {
-			icon = new ImageIcon("resources/Mute.png");
+			icon = new ImageIcon("resources/Icons/Mute.png");
 		} else {
-			icon = new ImageIcon("resources/Unmute.png");
+			icon = new ImageIcon("resources/Icons/Unmute.png");
 		}
 
 		Image img = icon.getImage();

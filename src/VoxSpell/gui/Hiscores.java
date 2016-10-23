@@ -60,7 +60,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 		{
 			JLabel firstLabel = new JLabel("");
 
-			ImageIcon icon = new ImageIcon("resources/1st.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/1st.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -72,7 +72,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 		{
 			JLabel secondLabel = new JLabel("");
 
-			ImageIcon icon = new ImageIcon("resources/2nd.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/2nd.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -84,7 +84,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 		{
 			JLabel thirdLabel = new JLabel("");
 
-			ImageIcon icon = new ImageIcon("resources/3rd.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/3rd.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -98,7 +98,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 			logo.setHorizontalAlignment(SwingConstants.CENTER);
 			logo.setBounds(0, 0, 800, 120);
 			add(logo);
-			ImageIcon image = new ImageIcon("resources/Hiscores.png");
+			ImageIcon image = new ImageIcon("resources/Icons/Hiscores.png");
 
 			logo.setIcon(image);
 		}
@@ -108,7 +108,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 
 	public void viewScores() {
 
-		ArrayList<String> results = new Wordlist(new File("resources/Default Scores.txt")).readList();
+		ArrayList<String> results = new Wordlist(new File("resources/Data/Default Scores.txt")).readList();
 		ArrayList<String> extraResults = new Wordlist(new File(".scores")).readList();
 		ArrayList<Integer> resultScores = new ArrayList<Integer>();
 

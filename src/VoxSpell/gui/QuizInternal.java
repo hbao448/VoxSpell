@@ -44,21 +44,21 @@ public class QuizInternal extends JPanel {
 
 		repeatsLeftLabel = new JLabel("");
 		repeatsLeftLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		repeatsLeftLabel.setIcon(new ImageIcon("resources/Repeats.png"));
+		repeatsLeftLabel.setIcon(new ImageIcon("resources/Icons/Repeats.png"));
 		repeatsLeftLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		repeatsLeftLabel.setBounds(150, 200, 300, 40);
 		add(repeatsLeftLabel);
 
 		multiplierLabel = new JLabel("");
 		multiplierLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		multiplierLabel.setIcon(new ImageIcon("resources/Multiplier.png"));
+		multiplierLabel.setIcon(new ImageIcon("resources/Icons/Multiplier.png"));
 		multiplierLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		multiplierLabel.setBounds(10, 400, 360, 40);
 		add(multiplierLabel);
 
 		ScoreLabel = new JLabel("");
 		ScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		ScoreLabel.setIcon(new ImageIcon("resources/Score.png"));
+		ScoreLabel.setIcon(new ImageIcon("resources/Icons/Score.png"));
 		ScoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		ScoreLabel.setBounds(10, 450, 140, 40);
 		add(ScoreLabel);
@@ -77,14 +77,14 @@ public class QuizInternal extends JPanel {
 
 		levelLabel = new JLabel("");
 		levelLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		levelLabel.setIcon(new ImageIcon("resources/Level.png"));
+		levelLabel.setIcon(new ImageIcon("resources/Icons/Level.png"));
 		levelLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		levelLabel.setBounds(10, 110, 130, 40);
 		add(levelLabel);
 
 		wordLabel = new JLabel("");
 		wordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		wordLabel.setIcon(new ImageIcon("resources/Word.png"));
+		wordLabel.setIcon(new ImageIcon("resources/Icons/Word.png"));
 		wordLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		wordLabel.setBounds(360, 110, 130, 40);
 		add(wordLabel);
@@ -101,13 +101,13 @@ public class QuizInternal extends JPanel {
 
 		newHighscoreLabel = new JLabel("");
 		newHighscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		newHighscoreLabel.setIcon(new ImageIcon("resources/New Highscore.png"));
+		newHighscoreLabel.setIcon(new ImageIcon("resources/Icons/New Highscore.png"));
 		newHighscoreLabel.setBounds(420, 451, 350, 40);
 		add(newHighscoreLabel);
 		newHighscoreLabel.setVisible(false);
 
 		highscoreLabel = new JLabel("");
-		highscoreLabel.setIcon(new ImageIcon("resources/Highscore.png"));
+		highscoreLabel.setIcon(new ImageIcon("resources/Icons/Highscore.png"));
 		highscoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		highscoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		highscoreLabel.setBounds(10, 500, 220, 40);
@@ -120,7 +120,7 @@ public class QuizInternal extends JPanel {
 		add(highscoreNumberLabel);
 
 		hintLabel = new JLabel("");
-		hintLabel.setIcon(new ImageIcon("resources/Hint.png"));
+		hintLabel.setIcon(new ImageIcon("resources/Icons/Hint.png"));
 		hintLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		hintLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		hintLabel.setBounds(120, 330, 140, 40);

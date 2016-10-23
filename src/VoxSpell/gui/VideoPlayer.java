@@ -64,7 +64,7 @@ public class VideoPlayer extends AbstractScreen {
 
 		JButton exit = new JButton("");
 		{
-			ImageIcon icon = new ImageIcon("resources/Stop.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/Stop.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -85,7 +85,7 @@ public class VideoPlayer extends AbstractScreen {
 		});
 		rewind.setBounds(340, 35, 30, 30);
 		{
-			ImageIcon icon = new ImageIcon("resources/Back.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/Back.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -101,7 +101,7 @@ public class VideoPlayer extends AbstractScreen {
 		});
 		ffwd.setBounds(430, 35, 30, 30);
 		{
-			ImageIcon icon = new ImageIcon("resources/Forward.png");
+			ImageIcon icon = new ImageIcon("resources/Icons/Forward.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
@@ -148,9 +148,9 @@ public class VideoPlayer extends AbstractScreen {
 		ImageIcon icon;
 
 		if (playing) {
-			icon = new ImageIcon("resources/Pause.png");
+			icon = new ImageIcon("resources/Icons/Pause.png");
 		} else {
-			icon = new ImageIcon("resources/Play.png");
+			icon = new ImageIcon("resources/Icons/Play.png");
 		}
 
 		Image img = icon.getImage();

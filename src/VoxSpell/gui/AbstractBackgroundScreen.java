@@ -12,7 +12,7 @@ public abstract class AbstractBackgroundScreen extends AbstractScreen{
 	
 	public AbstractBackgroundScreen() {
 		super();
-		this.bg = new ImageIcon("resources/Background.jpg").getImage();
+		this.bg = new ImageIcon("resources/Images/Background.jpg").getImage();
 		
 	}
 	

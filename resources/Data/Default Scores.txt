@@ -1,0 +1,6 @@
+John	11	500	Default Wordlist.txt
+John	10	400	Default Wordlist.txt
+John	9	300	Default Wordlist.txt
+John	8	200	Default Wordlist.txt
+John	7	100	Default Wordlist.txt
+John	6	300	Default Wordlist.txt

@@ -277,12 +277,12 @@ public class Quiz extends AbstractBackgroundScreen{
 
 				if (_level < wordlist.getMaxLevel()) {
 					@SuppressWarnings("unused")
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/big_buck_bunny_1_minute.avi", _mainFrame);
+					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/Videos/Video Reward.avi", _mainFrame);
 					_mainFrame.setScreen(video);
 					video.play();
 				} else {
 					// The bonus video is played if the level is the final level
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/bonus_reward.avi", _mainFrame);
+					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/Videos/Bonus Video Reward.avi", _mainFrame);
 					_mainFrame.setScreen(video);
 					video.play();
 				}
@@ -504,7 +504,7 @@ public class Quiz extends AbstractBackgroundScreen{
 
 		panel.add(input);
 		panel.add(quizOptions);
-		playerLabel.setIcon(new ImageIcon("resources/Player.png"));
+		playerLabel.setIcon(new ImageIcon("resources/Icons/Player.png"));
 		playerLabel.setBounds(10, 10, 160, 40);
 
 		internal.add(playerLabel);
@@ -513,7 +513,7 @@ public class Quiz extends AbstractBackgroundScreen{
 		playerName.setText(_name);
 
 		internal.add(playerName);
-		wordlistLabel.setIcon(new ImageIcon("resources/Wordlist.png"));
+		wordlistLabel.setIcon(new ImageIcon("resources/Icons/Wordlist.png"));
 		wordlistLabel.setBounds(10, 60, 200, 40);
 
 		internal.add(wordlistLabel);

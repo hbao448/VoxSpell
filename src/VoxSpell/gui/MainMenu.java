@@ -138,14 +138,14 @@ public class MainMenu extends AbstractBackgroundScreen {
 		levelLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		levelLabel.setBounds(410, 10, 250, 38);
 		panel.add(levelLabel);
-		ImageIcon level = new ImageIcon("resources/Level.png");
+		ImageIcon level = new ImageIcon("resources/Icons/Level.png");
 		levelLabel.setIcon(level);
 
 		JLabel nameLabel = new JLabel();
 		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		nameLabel.setBounds(140, 10, 250, 38);
 		panel.add(nameLabel);
-		ImageIcon name = new ImageIcon("resources/Name.png");
+		ImageIcon name = new ImageIcon("resources/Icons/Name.png");
 		nameLabel.setIcon(name);
 		invalidNameLabel.setBounds(62, 120, 179, 50);
 		invalidNameLabel.setVisible(false);
@@ -158,7 +158,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 		logo.setForeground(new Color(100, 149, 237));
 		//logo.setBackground(new Color(100, 149, 237));
 		logo.setBounds(0, 0, 800, 150);
-		ImageIcon image = new ImageIcon("resources/Logo.png");
+		ImageIcon image = new ImageIcon("resources/Icons/Logo.png");
 		logo.setIcon(image);
 
 		add(logo);
@@ -196,7 +196,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 			}
 
 		});
-		ImageIcon settingsIcon = new ImageIcon("resources/Settings Icon.png");
+		ImageIcon settingsIcon = new ImageIcon("resources/Icons/Settings Icon.png");
 		Image img = settingsIcon.getImage();
 		Image resized = img.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
 		settingsIcon = new ImageIcon(resized);

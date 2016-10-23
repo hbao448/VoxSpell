@@ -132,7 +132,7 @@ public class Statistics extends AbstractBackgroundScreen{
 			logo.setHorizontalAlignment(SwingConstants.CENTER);
 			logo.setBounds(0, 0, 800, 120);
 
-			ImageIcon image = new ImageIcon("resources/Statistics.png");
+			ImageIcon image = new ImageIcon("resources/Icons/Statistics.png");
 
 			logo.setIcon(image);
 			add(logo);
