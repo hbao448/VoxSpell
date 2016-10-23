@@ -128,7 +128,7 @@ public class Wordlist {
 		int previousLevel = 0;
 
 		for(String content: all){
-			if(content.startsWith("%Level")){
+			if(content.startsWith("%Level ")){
 				int level = Integer.parseInt(content.split(" ")[1]);
 				if (level != previousLevel + 1) {
 					throw new WordlistFormatException("The input wordlist must the levels stored in ascending order, starting from level 1");

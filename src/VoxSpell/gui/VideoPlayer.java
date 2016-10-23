@@ -1,18 +1,16 @@
 package VoxSpell.gui;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 
 public class VideoPlayer extends AbstractScreen {
 

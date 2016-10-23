@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Image;
 
+import VoxSpell.festival.Bash;
+
 @SuppressWarnings("serial")
 public class MainMenu extends AbstractBackgroundScreen {
 
@@ -220,5 +222,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 
 		options.add(exit);
 		options.add(settings);
+		
+		Bash.bashCommand("rm -f resources/GeneratedVideos/Reward*");
 	}
 }

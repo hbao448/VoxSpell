@@ -1,15 +1,16 @@
 package VoxSpell.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,9 +25,7 @@ import VoxSpell.words.Level;
 import VoxSpell.words.ScoreKeeper;
 import VoxSpell.words.Word;
 import VoxSpell.words.Wordlist;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Font;
+import VoxSpell.media.VideoMaker;
 
 public class Quiz extends AbstractBackgroundScreen{
 
@@ -66,6 +65,7 @@ public class Quiz extends AbstractBackgroundScreen{
 	private final JLabel wordlistLabel = new JLabel();
 	private final JLabel wordlistName = new JLabel();
 	private JButton hint = new JButton("Hint");
+	private VideoMaker videoMaker;
 
 	public Quiz(MainFrame mainFrame, int level, String name) {
 
@@ -102,8 +102,10 @@ public class Quiz extends AbstractBackgroundScreen{
 		words.reset();
 		numberCorrect = 0;
 		testNum = 1;
+		videoMaker = new VideoMaker(_level, _name);
+		videoMaker.execute();
 		test();
-
+		
 	}
 
 
@@ -275,17 +277,9 @@ public class Quiz extends AbstractBackgroundScreen{
 					toggleSongText(false);
 				}
 
-				if (_level < wordlist.getMaxLevel()) {
-					@SuppressWarnings("unused")
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/Videos/Video Reward.avi", _mainFrame);
-					_mainFrame.setScreen(video);
-					video.play();
-				} else {
-					// The bonus video is played if the level is the final level
-					VideoPlayer video = new VideoPlayer(Quiz.this, "resources/Videos/Bonus Video Reward.avi", _mainFrame);
-					_mainFrame.setScreen(video);
-					video.play();
-				}
+				VideoPlayer video = new VideoPlayer(Quiz.this, "resources/GeneratedVideos/Reward" + _level + ".avi", _mainFrame);
+				_mainFrame.setScreen(video);
+				video.play();
 
 			}
 
@@ -393,7 +387,7 @@ public class Quiz extends AbstractBackgroundScreen{
 				spellcheck(input.getText());
 				// Checks that the user's input in the JTextField is spelled
 				// correctly
-				
+
 				if (currentWord.isCorrect()) {
 					//previousCorrect.add("Correct");
 
@@ -482,7 +476,7 @@ public class Quiz extends AbstractBackgroundScreen{
 		repeat.setEnabled(false);
 
 		quizOptions.add(repeat);
-		
+
 		hint.addActionListener(new ActionListener() {
 
 			@Override
@@ -493,11 +487,11 @@ public class Quiz extends AbstractBackgroundScreen{
 				updateInternals();
 				internal.showHint(currentWord.getWord());
 			}
-			
+
 		});
-		
+
 		quizOptions.add(hint);
-		
+
 		panel.setLayout(null);
 		panel.setOpaque(false);
 		//quizOptions.setBackground(new Color(100, 149, 237));
@@ -535,7 +529,7 @@ public class Quiz extends AbstractBackgroundScreen{
 	 * @param text The user's attempt at the current word
 	 * @return
 	 */
-		private void spellcheck(String text) {
+	private void spellcheck(String text) {
 
 		boolean spelled = currentWord.spellcheck(text);
 
@@ -570,7 +564,7 @@ public class Quiz extends AbstractBackgroundScreen{
 	public void setRepeats(int repeats) {
 		this.repeats = repeats;
 	}
-	
+
 	public void toggleSubmit(boolean enabled) {
 		submit.setEnabled(enabled);
 	}
