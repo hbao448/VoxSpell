@@ -35,7 +35,7 @@ public class MusicPlayer{
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			volume.setValue(-30);
+			volume.setValue((float)-27.5);
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 		}
@@ -64,7 +64,7 @@ public class MusicPlayer{
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			volume.setValue(-30);
+			volume.setValue((float) -20);
 			clip.start();
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
@@ -82,5 +82,11 @@ public class MusicPlayer{
 		        }
 			}
 		});
+	}
+	
+	public void setVolume(int vol) {
+		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float ratio = (float)vol/100;
+		volume.setValue(-45+(ratio)*35);
 	}
 }

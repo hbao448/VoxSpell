@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
 	private SettingsData settings;
 	private MusicPlayer player;
 	private JButton bgmPlayback;
+	private JSlider volumeControl;
 
 	public static void main(String[] Args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -77,6 +78,20 @@ public class MainFrame extends JFrame {
 		bgmPlayback.setBounds(740, 10, 50, 50);
 		bgmPlayback.setFocusable(false);
 		
+		volumeControl = new JSlider(JSlider.VERTICAL);
+		volumeControl.setBounds(720,10,20,50);
+		volumeControl.setMaximum(100);
+		volumeControl.setMinimum(0);
+		volumeControl.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				 JSlider slider = (JSlider) e.getSource();
+				 player.setVolume(slider.getValue());
+			}
+		});
+		
+		
 		setScreen(new MainMenu(this));
 		setLocationRelativeTo(null);
 		player = new MusicPlayer(false);
@@ -86,6 +101,7 @@ public class MainFrame extends JFrame {
 	public void setScreen(AbstractScreen screen) {
 		setContentPane(screen);
 		getContentPane().add(bgmPlayback);
+		getContentPane().add(volumeControl);
 		pack();
 		revalidate();
 		repaint();
