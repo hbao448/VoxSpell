@@ -24,7 +24,7 @@ import VoxSpell.media.MusicPlayer;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
-	private AbstractScreen _screen;
+	private AbstractBackgroundScreen _screen;
 	@SuppressWarnings("rawtypes")
 	private JComboBox selectLV;
 	@SuppressWarnings("rawtypes")

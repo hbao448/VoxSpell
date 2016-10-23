@@ -24,7 +24,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import VoxSpell.words.Wordlist;
 import VoxSpell.words.WordlistFormatException;
 
-public class Settings extends AbstractScreen{
+public class Settings extends AbstractBackgroundScreen{
 
 	private MainFrame _mainFrame;
 	private JTextField textField;

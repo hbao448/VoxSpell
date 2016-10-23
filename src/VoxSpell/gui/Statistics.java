@@ -37,7 +37,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import VoxSpell.words.Wordlist;
 
-public class Statistics extends AbstractScreen{
+public class Statistics extends AbstractBackgroundScreen{
 
 	private JButton close = new JButton("Main Menu");
 	private JButton changeView = new JButton("Table View");

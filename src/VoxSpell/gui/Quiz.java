@@ -1,7 +1,5 @@
 package VoxSpell.gui;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -30,7 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 
-public class Quiz extends AbstractScreen{
+public class Quiz extends AbstractBackgroundScreen{
 
 	private MainFrame _mainFrame;
 	private JTextField input = new JTextField();

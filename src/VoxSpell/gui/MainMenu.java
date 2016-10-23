@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 
 @SuppressWarnings("serial")
-public class MainMenu extends AbstractScreen {
+public class MainMenu extends AbstractBackgroundScreen {
 
 	private JButton quiz = new JButton("New Spelling Quiz");
 	private JButton hiscores = new JButton("View Hiscores");

@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import VoxSpell.words.Wordlist;
 
-public class Hiscores extends AbstractScreen{
+public class Hiscores extends AbstractBackgroundScreen{
 
 	private JTable table;
 	private JScrollPane scrollPane;
