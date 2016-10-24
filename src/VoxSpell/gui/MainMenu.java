@@ -234,7 +234,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 		help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(new File("resources/Data/UserManual.pdf"));
+					Desktop.getDesktop().open(new File("resources/Data/User Manual.pdf"));
 				} catch (IOException | IllegalArgumentException e1) {
 					JOptionPane.showMessageDialog(new JFrame(), "Please put the user manual file back in resources/Data", "Can't find user manual",
 							JOptionPane.ERROR_MESSAGE);
