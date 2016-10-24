@@ -1,7 +1,10 @@
 package VoxSpell.gui;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,6 +19,7 @@ import VoxSpell.words.ScoreKeeper;
 import VoxSpell.words.Wordlist;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Image;
@@ -38,6 +42,7 @@ public class MainMenu extends AbstractBackgroundScreen {
 	private int _level = 1;
 	private JTextField nameInput;
 	private final JLabel invalidNameLabel = new JLabel("<html>Please enter a name between<br>1 and 15 letters long!</html>");
+	private JButton help;
 
 	public MainMenu(MainFrame mainFrame) {
 		_mainFrame = mainFrame;
@@ -198,11 +203,13 @@ public class MainMenu extends AbstractBackgroundScreen {
 			}
 
 		});
+		{
 		ImageIcon settingsIcon = new ImageIcon("resources/Icons/Settings Icon.png");
 		Image img = settingsIcon.getImage();
 		Image resized = img.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
 		settingsIcon = new ImageIcon(resized);
 		settings.setIcon(settingsIcon);
+		}
 		settings.setBounds(250, 25, 50, 50);
 
 		settings.setToolTipText("Change voice and speaker speed");
@@ -223,6 +230,30 @@ public class MainMenu extends AbstractBackgroundScreen {
 		options.add(exit);
 		options.add(settings);
 		
+		help = new JButton("");
+		help.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File("resources/Data/UserManual.pdf"));
+				} catch (IOException | IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(new JFrame(), "Please put the user manual file back in resources/Data", "Can't find user manual",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		{
+		ImageIcon icon = new ImageIcon("resources/Icons/Help.png");
+		Image img = icon.getImage();
+		Image resized = img.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
+		icon = new ImageIcon(resized); 
+		help.setIcon(icon);
+		}
+		help.setBounds(740, 70, 50, 50);
+		help.setFocusable(false);
+		add(help);
+		
 		Bash.bashCommand("rm -f resources/Videos/Reward*");
+		
 	}
 }

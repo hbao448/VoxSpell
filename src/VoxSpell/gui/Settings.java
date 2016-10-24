@@ -90,7 +90,6 @@ public class Settings extends AbstractBackgroundScreen{
 						JOptionPane.showMessageDialog(new JFrame(), e1.getMessage(), "Incorrect File Format",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
-
 				}
 			}
 		});

@@ -11,11 +11,11 @@ public class Wordlist {
 	private int maxLevel;
 	private File wordlist;
 	private ArrayList<Level> wordLevels = new ArrayList<Level>();
-	
+
 	public Wordlist(File wordlist) {
 		this.wordlist = wordlist;
 	}
-	
+
 	/**
 	 * This method reads each line in a file and stores each line into an
 	 * ArrayList of strings and returns the ArrayList
@@ -48,7 +48,7 @@ public class Wordlist {
 		return results;
 
 	}
-	
+
 	/**
 	 * This method reads all the words inside a level from a wordlist
 	 * 
@@ -100,11 +100,11 @@ public class Wordlist {
 		if (results.isEmpty()) {
 			throw new WordlistFormatException("Level " + level + " in " + getName() + " is empty.");
 		}
-		
+
 		return new Level(results);
 
 	}
-	
+
 	/**
 	 * This method scans all of the levels inside a wordlist and also saves the maximum level inside the
 	 * wordlist
@@ -117,11 +117,11 @@ public class Wordlist {
 	 * @throws Exception 
 	 */
 	public ArrayList<String> scanLevels() throws WordlistFormatException{
-		
+
 		if (wordlist.length() > 10000000) {
 			throw new WordlistFormatException("The wordlist must be smaller than 10MB, please select another file");
 		}
-		
+
 		maxLevel = 0;
 		ArrayList<String> all = readList();
 		ArrayList<String> levels = new ArrayList<String>();
@@ -129,7 +129,14 @@ public class Wordlist {
 
 		for(String content: all){
 			if(content.startsWith("%Level ")){
-				int level = Integer.parseInt(content.split(" ")[1]);
+				int level;
+				try {
+					level = Integer.parseInt(content.split(" ")[1]);
+				} catch (NumberFormatException e) {
+					throw new WordlistFormatException(content.split(" ")[1] + " is not a valid level name");
+				} catch (ArrayIndexOutOfBoundsException e) {
+					throw new WordlistFormatException("The input wordlist must have \"%Level \" and a number to represent each level, followed by words in that level");
+				}
 				if (level != previousLevel + 1) {
 					throw new WordlistFormatException("The input wordlist must the levels stored in ascending order, starting from level 1");
 				}
@@ -155,7 +162,7 @@ public class Wordlist {
 	public String getName() {
 		return wordlist.getName();
 	}
-	
+
 	public Level getLevel(int i) {
 		return wordLevels.get(i-1);
 	}

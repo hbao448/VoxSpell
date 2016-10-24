@@ -149,8 +149,8 @@ public class Statistics extends AbstractBackgroundScreen{
 
 		// Displays an error message if there are no statistics to be shown
 		if (results.size() == 0) {
-			JOptionPane.showMessageDialog(new JFrame(), "Error, no results saved", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "There are currently no results saved", "No Results",
+					JOptionPane.INFORMATION_MESSAGE);
 			throw new EmptyStatsException();
 		} else {
 			// Stores the results for every level as a HashMap with a 3 element array representing passed, failed and total score

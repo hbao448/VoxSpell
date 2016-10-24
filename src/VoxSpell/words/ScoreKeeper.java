@@ -57,15 +57,6 @@ public class ScoreKeeper {
 
 		}
 
-		file = new File(".failed");
-
-		file.delete();
-		try {
-			file.createNewFile();
-		} catch (IOException e) {
-
-		}
-
 		file = new File(".scores");
 
 		file.delete();
@@ -114,70 +105,6 @@ public class ScoreKeeper {
 			} catch (IOException e) {
 
 			}
-		}
-
-	}
-	
-	/**
-	 * This method appends a word to the failed file if the word is not already
-	 * on the failed file
-	 * 
-	 * Modified code from A2
-	 * 
-	 * @param currentWord the word to append to the failed file
-	 */
-	public void appendFailed(String currentWord, int level) {
-		Wordlist failedList = new Wordlist(new File(".failed"));
-		ArrayList<String> failed = failedList.readList();
-
-		//The current word contains both the word as well as the level it is from
-		currentWord = currentWord + "	" + level;
-		// If the failed list does not contain the word to be added, then it is
-		// added
-		if (!failed.contains(currentWord)) {
-
-			BufferedWriter bw = null;
-
-			try {
-				bw = new BufferedWriter(new FileWriter(".failed", true));
-				bw.write(currentWord);
-				bw.newLine();
-				bw.close();
-			} catch (IOException e) {
-
-			}
-
-		}
-
-	}
-	/**
-	 * This method removes a word from the failed list if it exists there, it is
-	 * intended to be called once the user correctly spells a word
-	 * 
-	 * Reused A2 code
-	 * 
-	 * @param currentWord The word to remove from the failed file
-	 */
-	public void removeWord(String currentWord) {
-		
-		Wordlist failedList = new Wordlist(new File(".failed"));
-		ArrayList<String> failed = failedList.readList();
-
-		BufferedWriter bw = null;
-
-		try {
-			bw = new BufferedWriter(new FileWriter(".failed"));
-
-			for (String word : failed) {
-				if (!word.equals(currentWord)) {
-					bw.write(word);
-					bw.newLine();
-				}
-			}
-
-			bw.close();
-		} catch (IOException e) {
-
 		}
 
 	}

@@ -405,21 +405,12 @@ public class Quiz extends AbstractBackgroundScreen{
 						text.add(currentWord.getWord());
 						_festival.textToSpeech(text);
 
-					} else {
-						// Once they fail two times, the word is considered
-						// failed
-						//previousCorrect.add("Incorrect");
-
-
-						scorer.appendFailed(currentWord.getWord(), _level);
-
 					}
 				}
 
 				// If the user correctly spells a word, it is removed from their
 				// failed list
 				if (currentWord.isCorrect()) {
-					scorer.removeWord(currentWord.getWord() + "\t" + _level);
 					numberCorrect++;
 				}
 
