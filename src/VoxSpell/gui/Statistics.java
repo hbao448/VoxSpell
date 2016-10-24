@@ -37,6 +37,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import VoxSpell.words.Wordlist;
 
+@SuppressWarnings("serial")
 public class Statistics extends AbstractBackgroundScreen{
 
 	private JButton close = new JButton("Main Menu");
@@ -53,7 +54,6 @@ public class Statistics extends AbstractBackgroundScreen{
 
 	public Statistics(MainFrame mainFrame) throws EmptyStatsException {
 		setLayout(null);
-		//close.setBackground(new Color(255, 255, 0));
 		_mainFrame = mainFrame;
 		showStats();
 	}
@@ -80,7 +80,7 @@ public class Statistics extends AbstractBackgroundScreen{
 			scroll.setBorder(BorderFactory.createEmptyBorder());
 			scroll.setVisible(false);
 
-			// Disposes the JFrame and unhides the main menu once the "Main Menu" button is pressed
+			// Displays the main menu when the button is pressed
 			close.addActionListener(new ActionListener() {
 
 				@Override
@@ -90,15 +90,11 @@ public class Statistics extends AbstractBackgroundScreen{
 
 			});
 
-
-			//scroll.getViewport().setBackground(new Color(100, 149, 237));
-
-			//table.setBackground(new Color(255, 255, 0));
-			//scroll.setBackground(new Color(100, 149, 237));
 			// Finally displays the JFrame containing the statistics
 			close.setBounds(200, 560, 100, 25);
 			add(close);
 
+			//Adds a button that allows the user to switch between the two views when pressed
 			changeView.addActionListener(new ActionListener() {
 
 				@Override
@@ -119,6 +115,7 @@ public class Statistics extends AbstractBackgroundScreen{
 			changeView.setBounds(500, 560, 100, 25);
 			add(changeView);
 
+			//Creates a transparent chart panel that is used to store the graph
 			chartPanel = new ChartPanel(chart);
 			chartPanel.setPopupMenu(null);
 			chartPanel.setDomainZoomable(false);
@@ -128,6 +125,7 @@ public class Statistics extends AbstractBackgroundScreen{
 			chartPanel.setBounds(50, 120, 700, 420);
 			add(chartPanel);
 
+			//Adds heading logo
 			JLabel logo = new JLabel("");
 			logo.setHorizontalAlignment(SwingConstants.CENTER);
 			logo.setBounds(0, 0, 800, 120);
@@ -140,7 +138,7 @@ public class Statistics extends AbstractBackgroundScreen{
 		}
 	}
 
-	/*
+	/**
 	 * Modified A2 code
 	 */
 	private void calculateStats() throws EmptyStatsException {
@@ -249,6 +247,9 @@ public class Statistics extends AbstractBackgroundScreen{
 
 	}
 
+	/**
+	 * This method creates a line chart in a style using JFreeChart
+	 */
 	public void createChart() {
 		chart = ChartFactory.createLineChart("Accuracy Rates For Recent Quizzes", "", "% Correct", dataset, PlotOrientation.VERTICAL, false, false, false);
 		chart.setBackgroundPaint(null);

@@ -19,6 +19,10 @@ public class MusicPlayer{
 	private Clip clip;
 	private long currentLength;
 
+	/**
+	 * Create a music player object that plays either the background music or the music reward
+	 * @param reward
+	 */
 	public MusicPlayer(boolean reward) {
 		if (reward) {
 			playReward();
@@ -27,6 +31,9 @@ public class MusicPlayer{
 		}
 	}
 	
+	/**
+	 * Plays the background music in an infinite loop
+	 */
 	private void playSong() {
 
 		String soundName = "resources/Sounds/BGM.wav";
@@ -41,8 +48,10 @@ public class MusicPlayer{
 		}
 	}
 
+	/**
+	 * Toggles the playback of the song
+	 */
 	public void togglePlayback() {
-
 		if (clip.isActive()){
 			currentLength = clip.getMicrosecondPosition();
 			clip.stop();
@@ -52,10 +61,17 @@ public class MusicPlayer{
 		}
 	}
 	
+	/**
+	 * Returns whether or not the song is playing
+	 * @return
+	 */
 	public boolean isPlaying() {
 		return clip.isActive();
 	}
 	
+	/**
+	 * Plays the music reward
+	 */
 	private void playReward() {
 		
 		String soundName = "resources/Sounds/Music Reward.wav";
@@ -71,10 +87,12 @@ public class MusicPlayer{
 		}
 	}
 	
+	/**
+	 * Adds a listener to the clip to change the quiz button's text if the song ends
+	 * @param quiz
+	 */
 	public void setQuiz(Quiz quiz) {
-
 		clip.addLineListener(new LineListener(){
-
 			@Override
 			public void update(LineEvent event) {
 				if (event.getType() == LineEvent.Type.STOP) {
@@ -84,6 +102,10 @@ public class MusicPlayer{
 		});
 	}
 	
+	/**
+	 * Changes the volume of the song
+	 * @param vol
+	 */
 	public void setVolume(int vol) {
 		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		float ratio = (float)vol/100;

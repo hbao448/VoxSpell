@@ -3,13 +3,17 @@ package VoxSpell.gui;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.UIManager;
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+/**
+ * This class is used in conjunction with the quiz class to form the quiz interface
+ * @author Hunter
+ *
+ */
 @SuppressWarnings("serial")
 public class QuizInternal extends JPanel {
 
@@ -30,10 +34,9 @@ public class QuizInternal extends JPanel {
 	private JLabel hintTextLabel;
 
 	/**
-	 * Create the panel.
+	 * Create the panel and the various labels with icons
 	 */
 	public QuizInternal() {
-		//setBackground(new Color(100, 149, 237));
 		setOpaque(false);
 		setLayout(null);
 
@@ -135,41 +138,78 @@ public class QuizInternal extends JPanel {
 
 	}
 
+	/**
+	 * Sets the word number to be shown
+	 * @param wordNumber current word number
+	 * @param total total words
+	 */
 	public void setWord(int wordNumber, int total) {
 		wordNumberLabel.setText(wordNumber + " of " + total);
 	}
 
+	/**
+	 * Sets the level to be shown
+	 * @param level
+	 */
 	public void setLevel(int level) {
 		levelNumberLabel.setText(level+"");
 	}
 
+	/**
+	 * Sets the score to be shown
+	 * @param score
+	 */
 	public void setScore(int score) {
 		scoreNumberLabel.setText(score+"");
 	}
 
+	/**
+	 * Sets the multiplier to be shown
+	 * @param multiplier
+	 */
 	public void setMultiplier(int multiplier) {
 		multiplierNumberLabel.setText(multiplier + " x");
 	}
 
+	/**
+	 * Sets the number of repeats that the user has left
+	 * @param repeats
+	 */
 	public void setRepeats(int repeats) {
 		progressBar.setValue(repeats*10);
 		progressBar.setString(repeats+"");
 	}
 
+	/**
+	 * Shows a label that tells the user they have a new high score
+	 */
 	public void showHighscore() {
 		newHighscoreLabel.setVisible(true);
 	}
 
+	/**
+	 * Sets the high score to display
+	 * @param score the score to display
+	 */
 	public void setHighscore(int score) {
 		highscoreNumberLabel.setText(score+"");
 	}
 
+	/**
+	 * Shows a hint for a word
+	 * @param word
+	 */
 	public void showHint(String word) {
 		hintLabel.setVisible(true);
 		hintTextLabel.setText(getHint(word));
 		hintTextLabel.setVisible(true);
 	}
 
+	/**
+	 * Returns a string consisting of "_" for each letter in a word
+	 * @param word the word
+	 * @return
+	 */
 	private String getHint(String word) {
 		String hint = "";
 
@@ -184,6 +224,9 @@ public class QuizInternal extends JPanel {
 		return hint;
 	}
 
+	/**
+	 * Hides the hint
+	 */
 	public void disableHint() {
 		hintLabel.setVisible(false);
 		hintTextLabel.setVisible(false);

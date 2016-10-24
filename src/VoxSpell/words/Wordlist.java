@@ -30,7 +30,6 @@ public class Wordlist {
 		ArrayList<String> results = new ArrayList<String>();
 
 		try {
-
 			FileReader fr = new FileReader(wordlist);
 			BufferedReader br = new BufferedReader(fr);
 
@@ -42,21 +41,15 @@ public class Wordlist {
 			fr.close();
 
 		} catch (IOException e1) {
-
 		}
-
 		return results;
-
 	}
 
 	/**
 	 * This method reads all the words inside a level from a wordlist
 	 * 
-	 * Original code by David
-	 * 
-	 * @param file The wordlist containing all the levels and words
 	 * @param level The level from which words are to be found
-	 * @return An ArrayList containing all the words in a level
+	 * @return A Level object containing all the words in a level
 	 * @throws WordlistFormatException 
 	 */
 	private Level readLevel(int level) throws WordlistFormatException {
@@ -86,7 +79,10 @@ public class Wordlist {
 				if (line.equals(nextLevel)) {
 					break;
 				}
-				results.add(new Word(line));
+				// Add only words that are not duplicates
+				if (!results.contains(new Word(line))) {
+					results.add(new Word(line));
+				}
 				line = br.readLine();
 			}
 
@@ -97,6 +93,7 @@ public class Wordlist {
 
 		}
 
+		//Throw an exception if the wordlist is empty
 		if (results.isEmpty()) {
 			throw new WordlistFormatException("Level " + level + " in " + getName() + " is empty.");
 		}
@@ -109,15 +106,12 @@ public class Wordlist {
 	 * This method scans all of the levels inside a wordlist and also saves the maximum level inside the
 	 * wordlist
 	 * 
-	 * Original code by David
-	 * 
-	 * @param wordlist The wordlist to scan the levels from
 	 * @return An ArrayList of levels inside the wordlist
 	 * @throws WordlistFormatException 
-	 * @throws Exception 
 	 */
 	public ArrayList<String> scanLevels() throws WordlistFormatException{
 
+		//Does not allow a file larger than 10MB
 		if (wordlist.length() > 10000000) {
 			throw new WordlistFormatException("The wordlist must be smaller than 10MB, please select another file");
 		}
@@ -127,6 +121,7 @@ public class Wordlist {
 		ArrayList<String> levels = new ArrayList<String>();
 		int previousLevel = 0;
 
+		//Scan through the entire file and read the level headers and attempt to store the words in the levels, and throw exceptions if the format is incorrect
 		for(String content: all){
 			if(content.startsWith("%Level ")){
 				int level;
@@ -155,18 +150,35 @@ public class Wordlist {
 		return levels;
 	}
 
+	/**
+	 * Returns the maximum level in the wordlist
+	 * @return
+	 */
 	public int getMaxLevel() {
 		return maxLevel;
 	}
 
+	/**
+	 * Returns the name of the wordlist file
+	 * @return
+	 */
 	public String getName() {
 		return wordlist.getName();
 	}
 
+	/**
+	 * Returns a level object corresponding to the level number
+	 * @param i the level number
+	 * @return
+	 */
 	public Level getLevel(int i) {
 		return wordLevels.get(i-1);
 	}
 
+	/**
+	 * Returns the path to the wordlist file
+	 * @return
+	 */
 	public String getPath() {
 		return wordlist.getPath();
 	}

@@ -13,6 +13,9 @@ public class VideoMaker extends SwingWorker<Void,Void>{
 		this.name = name;
 	}
 	
+	/**
+	 * Generates a string that will work in bash to generate a video with text overlay, and then calls it in bash on a background thread
+	 */
 	@Override
 	protected Void doInBackground() {
 		
@@ -21,7 +24,7 @@ public class VideoMaker extends SwingWorker<Void,Void>{
 		command += name;
 		command += "': fontcolor=white: fontsize=24: x=(w-text_w)/2: y=10, drawtext=fontfile='resources/Fonts/njnaruto.ttf': text='You passed level ";
 		command += level+"";
-		command += " good work': fontcolor=black: fontsize=24: x=(w-text_w)/2: y=(h-30)\" -codec:a copy \"resources/Videos/";
+		command += " good work': fontcolor=black: fontsize=24: x=(w-text_w)/2: y=(h-text_h-10)\" -codec:a copy \"resources/Videos/";
 		command += "Reward" + level + ".avi\"";
 		
 		Bash.bashCommand(command);

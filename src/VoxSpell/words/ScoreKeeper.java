@@ -16,6 +16,12 @@ public class ScoreKeeper {
 		this.settings = settings;
 	}
 
+	/**
+	 * Saves the user's name, score, and highest level to a file
+	 * @param name The user's name
+	 * @param _level2 The user's higest level
+	 * @param score The user's score
+	 */
 	public void saveScore(String name, int _level2, int score) {
 
 		BufferedWriter bw = null;
@@ -41,7 +47,7 @@ public class ScoreKeeper {
 	}
 	
 	/**
-	 * This method deletes the existing results and failed files and then
+	 * This method deletes the existing results and scores files and then
 	 * creates new ones that are empty
 	 * 
 	 * Reused code from A2
@@ -109,6 +115,12 @@ public class ScoreKeeper {
 
 	}
 	
+	/**
+	 * This method returns the highscore that a player has gotten for a particular wordlist
+	 * @param player The player's name
+	 * @param wordlist The wordlist filename
+	 * @return
+	 */
 	public int getHighscore(String player, String wordlist) {
 		
 		int highscore = 0;

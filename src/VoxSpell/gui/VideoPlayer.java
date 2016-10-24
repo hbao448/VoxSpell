@@ -12,6 +12,7 @@ import javax.swing.Timer;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
+@SuppressWarnings("serial")
 public class VideoPlayer extends AbstractScreen {
 
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
@@ -30,6 +31,7 @@ public class VideoPlayer extends AbstractScreen {
 
 		setLayout(null);
 
+		//Creates a new EmbeddedMediaPlayerComponent object, sets its size and then adds it to the panel
 		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 		mediaPlayerComponent.setBounds(0, 0, 800, 525);
 
@@ -38,12 +40,14 @@ public class VideoPlayer extends AbstractScreen {
 
 		add(mediaPlayerComponent);
 
+		//Creates a new panel that will be used to contain the progress bar, and video control options
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 525, 800, 75);
 		add(panel);
 		panel.setLayout(null);
 
-		pause = new JButton("");
+		//Creates a pause button and adds an action listener to toggle playback when it is pressed
+		pause = new JButton();
 		togglePlay(true);
 		pause.setBounds(380, 30, 40, 40);
 		panel.add(pause);
@@ -60,7 +64,8 @@ public class VideoPlayer extends AbstractScreen {
 			}
 		});
 
-		JButton exit = new JButton("");
+		//Creates an exit button with an icon to exit the player when pressed
+		JButton exit = new JButton();
 		{
 			ImageIcon icon = new ImageIcon("resources/Icons/Stop.png");
 			Image img = icon.getImage();
@@ -69,13 +74,20 @@ public class VideoPlayer extends AbstractScreen {
 			exit.setIcon(icon);
 		}
 		exit.setBounds(470, 35, 30, 30);
+		exit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				video.stop();
+				_mainFrame.setScreen(_quiz);
+				_quiz.setSubmitAsDefault();
+			}
+
+		});
 		panel.add(exit);
 
-		JProgressBar progress = new JProgressBar();
-		progress.setBounds(0, 0, 800, 25);
-		panel.add(progress);
-
-		JButton rewind = new JButton("");
+		//Creates a rewind button with an icon that rewinds 5 seconds when pressed
+		JButton rewind = new JButton();
 		rewind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				video.skip(-5000);
@@ -91,7 +103,8 @@ public class VideoPlayer extends AbstractScreen {
 		}
 		panel.add(rewind);
 
-		JButton ffwd = new JButton("");
+		//Creates a fast forward button with an icon that fast forwards 5 seconds when pressed
+		JButton ffwd = new JButton();
 		ffwd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				video.skip(5000);
@@ -106,18 +119,13 @@ public class VideoPlayer extends AbstractScreen {
 			ffwd.setIcon(icon);
 		}
 		panel.add(ffwd);
-		exit.addActionListener(new ActionListener() {
+		
+		//Creates a progress bar
+		JProgressBar progress = new JProgressBar();
+		progress.setBounds(0, 0, 800, 25);
+		panel.add(progress);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				video.stop();
-				_mainFrame.setScreen(_quiz);
-				_quiz.setSubmitAsDefault();
-				_mainFrame.toggleSoundButton(true);
-			}
-
-		});
-
+		//Creates a timer that will update the progress bar with the progress of the video every 50ms
 		timer = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -134,14 +142,20 @@ public class VideoPlayer extends AbstractScreen {
 				}
 			}
 		});
-
 	}
 
+	/**
+	 * Begins playback of the video
+	 */
 	public void play() {
 		video.playMedia(_fileName);
 		timer.start();
 	}
 
+	/**
+	 * Toggles the icon shown by the pause/play button 
+	 * @param playing
+	 */
 	public void togglePlay(boolean playing) {
 		ImageIcon icon;
 

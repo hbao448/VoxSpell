@@ -1,6 +1,5 @@
 package VoxSpell.gui;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import VoxSpell.words.Wordlist;
 
+@SuppressWarnings("serial")
 public class Hiscores extends AbstractBackgroundScreen{
 
 	private JTable table;
@@ -33,13 +33,12 @@ public class Hiscores extends AbstractBackgroundScreen{
 
 		_mainFrame = mainFrame;
 
-		//setBackground(new Color(100, 149, 237));
+		//Set the layout of the panel
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 
-
+		//Configure the main menu button to return to the main menu and then add it to the panel
 		JButton mainMenu = new JButton("Main Menu");
-		//mainMenu.setBackground(new Color(255, 255, 0));
 		mainMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_mainFrame.setScreen(new MainMenu(_mainFrame));
@@ -48,47 +47,43 @@ public class Hiscores extends AbstractBackgroundScreen{
 		mainMenu.setBounds(350, 560, 100, 25);
 		add(mainMenu);
 
+		//Create a new scroll pane, set its dimensions and then add it to the panel
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(160, 120, 600, 402);
 		add(scrollPane);
 
+		//Create a new table for the data to be stored in and configure the scroll pane to use the table
 		table = new JTable();
-		//table.setBackground(new Color(255, 255, 0));
 		scrollPane.setViewportView(table);
 		table.setRowHeight(75);
 
+		//Create labels that display icons for first, second and third place medals as well as the heading and then scale them and add them to the panel
 		{
 			JLabel firstLabel = new JLabel("");
-
 			ImageIcon icon = new ImageIcon("resources/Icons/1st.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
-
 			firstLabel.setIcon(icon);
 			firstLabel.setBounds(50, 150, 60, 60);
 			add(firstLabel);
 		}
 		{
 			JLabel secondLabel = new JLabel("");
-
 			ImageIcon icon = new ImageIcon("resources/Icons/2nd.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
-
 			secondLabel.setIcon(icon);
 			secondLabel.setBounds(50, 225, 60, 60);
 			add(secondLabel);
 		}
 		{
 			JLabel thirdLabel = new JLabel("");
-
 			ImageIcon icon = new ImageIcon("resources/Icons/3rd.png");
 			Image img = icon.getImage();
 			Image resized = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 			icon = new ImageIcon(resized); 
-
 			thirdLabel.setIcon(icon);
 			thirdLabel.setBounds(50, 300, 60, 60);
 			add(thirdLabel);
@@ -99,15 +94,19 @@ public class Hiscores extends AbstractBackgroundScreen{
 			logo.setBounds(0, 0, 800, 120);
 			add(logo);
 			ImageIcon image = new ImageIcon("resources/Icons/Hiscores.png");
-
 			logo.setIcon(image);
 		}
-
+		//Calls a helper method to populate the table
 		viewScores();
 	}
 
-	public void viewScores() {
+	/**
+	 * This method reads all of the user scores and the default scores and populates the existing table to show the
+	 * top five scores in descending order
+	 */
+	private void viewScores() {
 
+		//Reads the user scores and default scores and joins them
 		ArrayList<String> results = new Wordlist(new File("resources/Data/Default Scores.txt")).readList();
 		ArrayList<String> extraResults = new Wordlist(new File(".scores")).readList();
 		ArrayList<Integer> resultScores = new ArrayList<Integer>();
@@ -116,6 +115,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 
 		results.addAll(extraResults);
 
+		//Parses the result strings and stores them in a hash table
 		for (String result : results) {
 			String[] split = result.split("\t");
 
@@ -136,14 +136,15 @@ public class Hiscores extends AbstractBackgroundScreen{
 
 		}
 
+		//Sorts the scores in ascending order
 		Collections.sort(resultScores);
 
 		int added = 0;
 
 		Object[][] model = new Object[5][4];
 
+		//Adds data to the table until 5 results have been added
 		while (added < 5) {
-
 			for (int i = resultScores.size()-1 ; i >= 0 && added < 5; i--) {
 				ArrayList<Object[]> values = scores.get(resultScores.get(i));
 
@@ -160,6 +161,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 			}
 		}
 
+		//Sets up the headings for the table
 		table.setModel(new DefaultTableModel(
 				model,
 				new String[] {
@@ -167,6 +169,7 @@ public class Hiscores extends AbstractBackgroundScreen{
 				}
 				));
 
+		//Disables user interaction with the table
 		table.getColumnModel().getColumn(1).setPreferredWidth(105);
 		table.getColumnModel().getColumn(3).setPreferredWidth(128);
 		table.getTableHeader().setReorderingAllowed(false);

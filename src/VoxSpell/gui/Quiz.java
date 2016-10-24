@@ -27,6 +27,7 @@ import VoxSpell.words.Word;
 import VoxSpell.words.Wordlist;
 import VoxSpell.media.VideoMaker;
 
+@SuppressWarnings("serial")
 public class Quiz extends AbstractBackgroundScreen{
 
 	private MainFrame _mainFrame;
@@ -82,13 +83,7 @@ public class Quiz extends AbstractBackgroundScreen{
 	}
 
 	/**
-	 * This method creates the JFrame that contains the quiz GUI if it does not
-	 * already exist, prompts the user for a wordlist and then reads that list
-	 * and starts the quiz. An error message is shown if the wordlist file is
-	 * not called "wordlist" when in quiz mode or if the wordlist files are
-	 * empty
-	 * 
-	 * Modified A2 code
+	 * This method starts the quiz and also begins the generation of a custom video
 	 */
 	public void startQuiz() {
 
@@ -105,7 +100,7 @@ public class Quiz extends AbstractBackgroundScreen{
 		videoMaker = new VideoMaker(_level, _name);
 		videoMaker.execute();
 		test();
-		
+
 	}
 
 
@@ -172,7 +167,7 @@ public class Quiz extends AbstractBackgroundScreen{
 				scorer.appendList(_level, numberCorrect, size);
 
 				// If they pass the level then the user can move on to the next level or play a video reward
-				// If they are on the last level, then they are able to play the bonus video reward
+				// If they are on the last level, then they are only able to play the video reward
 				videoReward.setEnabled(true);
 				song.setEnabled(true);
 				if (_level < wordlist.getMaxLevel()) {
@@ -185,32 +180,27 @@ public class Quiz extends AbstractBackgroundScreen{
 				} else {
 					JOptionPane.showMessageDialog(new JFrame(),
 							"You have gotten " + numberCorrect
-							+ " words correct out of " + size + ", you may choose to play the bonus video reward! You have passed the final level, congratulations!",
+							+ " words correct out of " + size + ", you may choose to play a video reward! You have passed the final level, congratulations!",
 							"Pass", JOptionPane.INFORMATION_MESSAGE);
 
 				}
 			}
 
-
 			restart.setEnabled(true);
 
 		}
-
 	}
 
 	/**
-	 * This method creates the JFrame to display the quiz on and also sets up
+	 * This method creates the Panel to display the quiz on and also sets up
 	 * the buttons with their ActionListeners
 	 * 
-	 * Modified A2 code
 	 */
 	private void setUp() {
 
 		buzzer = new SoundBuzzer();
 
-		// The quiz JFrame is disposed and the main menu is unhidden once the
-		// user
-		// chooses to go back
+		// Prompts the user if they want to sve their score and then returns to the main menu
 		close.addActionListener(new ActionListener() {
 
 			@Override
@@ -222,6 +212,7 @@ public class Quiz extends AbstractBackgroundScreen{
 					scorer.saveScore(_name, _level, score);
 				}
 
+				//If the music reward is playing then stop it
 				if (rewardPlayer != null && rewardPlayer.isPlaying()) {
 					rewardPlayer.togglePlayback();
 					toggleSongText(false);
@@ -240,7 +231,7 @@ public class Quiz extends AbstractBackgroundScreen{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Starts a new quiz and disables the restart button
-
+				// Adds 5 to the number of repeats that the user has
 				if (getRepeats() < 5) {
 					setRepeats(getRepeats() + 5);
 				} else {
@@ -267,11 +258,12 @@ public class Quiz extends AbstractBackgroundScreen{
 			public void actionPerformed(ActionEvent e) {
 				videoReward.setEnabled(false);
 
+				//Stop the music before playing the video
 				if (player.isPlaying()) {
 					player.togglePlayback();
 					_mainFrame.toggleButton(false);
-					_mainFrame.toggleSoundButton(false);
 				}
+
 				if (rewardPlayer != null && rewardPlayer.isPlaying()) {
 					rewardPlayer.togglePlayback();
 					toggleSongText(false);
@@ -336,6 +328,7 @@ public class Quiz extends AbstractBackgroundScreen{
 			}
 		});
 
+		//Creates a new action listener that stops the music and changes the text on the button if the background music is started
 		al = new ActionListener() {
 
 			@Override
@@ -349,19 +342,13 @@ public class Quiz extends AbstractBackgroundScreen{
 
 		_mainFrame.addSoundListener(al);
 
+		//Sets up the options panel
 		song.setEnabled(false);
-		//panel.setBackground(new Color(100, 149, 237));
 		options.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		options.setOpaque(false);
 
 		options.add(close);
 		options.add(restart);
-		//options.setBackground(new Color(100, 149, 237));
-
-		// If the quiz type is quiz, then the options for the quiz include a next level button and
-		// video reward button
-		// by Hunter
-
 		options.add(nextLevel);
 		options.add(videoReward);
 		options.add(song);
@@ -391,9 +378,6 @@ public class Quiz extends AbstractBackgroundScreen{
 				// correctly
 
 				if (currentWord.isCorrect()) {
-					//previousCorrect.add("Correct");
-
-					/* _mainFrame.appendList(currentWord, attempts, true); */
 				} else {
 					if (currentWord.getAttempts() == 1) {
 						// If they have one failed attempt, then they are
@@ -408,8 +392,7 @@ public class Quiz extends AbstractBackgroundScreen{
 					}
 				}
 
-				// If the user correctly spells a word, it is removed from their
-				// failed list
+				//Updates the number correct
 				if (currentWord.isCorrect()) {
 					numberCorrect++;
 				}
@@ -418,8 +401,7 @@ public class Quiz extends AbstractBackgroundScreen{
 				input.setText("");
 
 				// Goes to the next word once the user gets the current word
-				// correct
-				// or fails twice
+				// correct or fails twice
 				if (currentWord.isCorrect() || currentWord.getAttempts() == 2) {
 					testNum++;
 					if (!currentWord.isCorrect()) {
@@ -471,6 +453,7 @@ public class Quiz extends AbstractBackgroundScreen{
 
 		quizOptions.add(repeat);
 
+		//Shows a hint on how to spell the word when pressed
 		hint.addActionListener(new ActionListener() {
 
 			@Override
@@ -488,8 +471,8 @@ public class Quiz extends AbstractBackgroundScreen{
 
 		panel.setLayout(null);
 		panel.setOpaque(false);
-		//quizOptions.setBackground(new Color(100, 149, 237));
 
+		//Sets up the icons and labels
 		panel.add(input);
 		panel.add(quizOptions);
 		playerLabel.setIcon(new ImageIcon("resources/Icons/Player.png"));
@@ -514,14 +497,8 @@ public class Quiz extends AbstractBackgroundScreen{
 	}
 
 	/**
-	 * This method returns a boolean that represents if the user correctly
-	 * spelled a word, and also increments the number of attempts that the user
-	 * has used
-	 * 
-	 * Reused A2 code
-	 * 
-	 * @param text The user's attempt at the current word
-	 * @return
+	 * This method spellchecks the word attempt and plays a sound based on if they got it correct
+	 * @param text
 	 */
 	private void spellcheck(String text) {
 
@@ -539,6 +516,9 @@ public class Quiz extends AbstractBackgroundScreen{
 
 	}
 
+	/**
+	 * Updates the numbers on the interface
+	 */
 	private void updateInternals() {
 		internal.setLevel(_level);
 		internal.setWord(testNum, size);
@@ -551,26 +531,49 @@ public class Quiz extends AbstractBackgroundScreen{
 		}
 	}
 
+	/**
+	 * Returns the number of repeats left
+	 * @return
+	 */
 	public int getRepeats() {
 		return repeats;
 	}
 
+	/**
+	 * Sets the available number of repeats
+	 * @param repeats
+	 */
 	public void setRepeats(int repeats) {
 		this.repeats = repeats;
 	}
 
+	/**
+	 * Toggles the submit button
+	 * @param enabled
+	 */
 	public void toggleSubmit(boolean enabled) {
 		submit.setEnabled(enabled);
 	}
 
+	/**
+	 * Toggles the repeat button
+	 * @param enabled
+	 */
 	public void toggleRepeat(boolean enabled) {
 		repeat.setEnabled(enabled);
 	}
 
+	/**
+	 * Sets the submit button to work with enter presses
+	 */
 	public void setSubmitAsDefault() {
 		_mainFrame.getRootPane().setDefaultButton(submit);
 	}
 
+	/**
+	 * Toggles the text shown in the music button
+	 * @param playing
+	 */
 	public void toggleSongText(boolean playing) {
 		if (playing) {
 			song.setText("Stop");
@@ -580,10 +583,17 @@ public class Quiz extends AbstractBackgroundScreen{
 		}
 	}
 
+	/**
+	 * Returns the current word
+	 * @return
+	 */
 	public Word getWord() {
 		return currentWord;
 	}
 
+	/**
+	 * This method enables the main menu button
+	 */
 	public void enableMenu() {
 		close.setEnabled(true);
 	}

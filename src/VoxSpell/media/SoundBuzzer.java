@@ -11,14 +11,24 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundBuzzer {
 	
+	/**
+	 * Plays a correct sound
+	 */
 	public void playCorrect() {
 		playClip("resources/Sounds/Correct.wav");
 	}
 	
+	/**
+	 * Plays an incorrect buzzing noise
+	 */
 	public void playIncorrect() {
 		playClip("resources/Sounds/Incorrect.wav");
 	}
 	
+	/**
+	 * Plays a sound clip
+	 * @param file the sound clip to play
+	 */
 	private void playClip(String file) {
 		
 		try {

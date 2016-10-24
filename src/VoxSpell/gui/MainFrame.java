@@ -1,17 +1,12 @@
 package VoxSpell.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -23,11 +18,6 @@ import VoxSpell.media.MusicPlayer;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-
-	private AbstractBackgroundScreen _screen;
-	@SuppressWarnings("rawtypes")
-	private JComboBox selectLV;
-	@SuppressWarnings("rawtypes")
 
 	private SettingsData settings;
 	private MusicPlayer player;
@@ -52,38 +42,34 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	/*
-	 * Reused A2 code
-	 */
+
 	public MainFrame() {
 		super("VoxSpell");
-		//setBackground(new Color(100, 149, 237));
-		//setSize(800, 600);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 		setResizable(false);
 
+		//Creates a new settings object
 		settings = new SettingsData();
 
-		bgmPlayback = new JButton("");
+		//Creates a button that toggles the playback of the background music
+		//The button also toggles its icon based on whether or not the music is playing
+		bgmPlayback = new JButton();
 		bgmPlayback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				player.togglePlayback();
 				toggleButton(player.isPlaying());
 			}
 		});
-		
 		bgmPlayback.setBounds(740, 10, 50, 50);
 		bgmPlayback.setFocusable(false);
 		
+		//Creates a new vertical slider that is used to control the background music volume
 		volumeControl = new JSlider(JSlider.VERTICAL);
 		volumeControl.setBounds(720,10,20,50);
 		volumeControl.setMaximum(100);
 		volumeControl.setMinimum(0);
 		volumeControl.addChangeListener(new ChangeListener() {
-
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				 JSlider slider = (JSlider) e.getSource();
@@ -91,13 +77,17 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		
+		//Initially displays the main menu
 		setScreen(new MainMenu(this));
 		setLocationRelativeTo(null);
 		player = new MusicPlayer(false);
 		toggleButton(true);
 	}
 
+	/**
+	 * Sets the input screen as the content pane of the frame and repaints the frame
+	 * @param screen the screen to set as the content pane
+	 */
 	public void setScreen(AbstractScreen screen) {
 		setContentPane(screen);
 		getContentPane().add(bgmPlayback);
@@ -107,14 +97,26 @@ public class MainFrame extends JFrame {
 		repaint();
 	}
 
+	/**
+	 * Returns the object containing all of the settings
+	 * @return
+	 */
 	public SettingsData getSettings() {
 		return settings;
 	}
 
+	/**
+	 * Returns the player that plays the background music
+	 * @return
+	 */
 	public MusicPlayer getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Toggles the icon displayed on the background music button from muted to unmuted and vice versa
+	 * @param playing True if the music is playing, otherwise false.
+	 */
 	public void toggleButton(boolean playing) {
 
 		ImageIcon icon;
@@ -132,15 +134,19 @@ public class MainFrame extends JFrame {
 
 	}
 	
+	/**
+	 * Adds an action listener to the background music button
+	 * @param al
+	 */
 	public void addSoundListener(ActionListener al) {
 		bgmPlayback.addActionListener(al);
 	}
 	
+	/**
+	 * Removes an action listener from the background music button
+	 * @param al
+	 */
 	public void removeSoundListener(ActionListener al) {
 		bgmPlayback.removeActionListener(al);
-	}
-	
-	public void toggleSoundButton(boolean enabled) {
-		bgmPlayback.setVisible(enabled);
 	}
 }

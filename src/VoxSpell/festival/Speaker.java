@@ -21,12 +21,12 @@ public class Speaker extends SwingWorker<Void, Void> {
 		return null;
 	}
 
-	// If the quiz is complete, then disable the submit button, otherwise
-	// re-enable the submit button
 	protected void done() {
 
 		Bash.bashCommand("rm -f .text.scm");
 
+		// If there is currently a quiz registered to the speaker object, then toggle
+		// the submit, repeat and main menu buttons
 		if (_quiz != null) {
 			if (_quiz.getRepeats() > 0 ) {
 				_quiz.toggleRepeat(true);

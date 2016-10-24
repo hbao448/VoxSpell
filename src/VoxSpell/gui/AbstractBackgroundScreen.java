@@ -5,6 +5,12 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/**
+ * This class extends AbstractScreen and serves the same purpose other than also
+ * painting the background image for the screens
+ * @author Hunter
+ *
+ */
 @SuppressWarnings("serial")
 public abstract class AbstractBackgroundScreen extends AbstractScreen{
 	
@@ -13,7 +19,6 @@ public abstract class AbstractBackgroundScreen extends AbstractScreen{
 	public AbstractBackgroundScreen() {
 		super();
 		this.bg = new ImageIcon("resources/Images/Background.jpg").getImage();
-		
 	}
 	
 	 @Override
